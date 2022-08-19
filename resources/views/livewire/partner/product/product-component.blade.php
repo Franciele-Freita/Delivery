@@ -83,12 +83,16 @@
                         </div>
                         @foreach ($category->products as $products )
 
-                            <div  class="anchor-pointer h-product row border py-3 my-1 d-flex align-items-center text-Dark rounded ">
+                            <div  class="anchor-pointer h-product row border py-3 my-1 d-flex align-items-center text-Dark rounded "  @if ($products->status == "Inativo")
+                            style="opacity:0.7; background-color:rgba(175, 175, 175, 0.3);"
+                            @else
+
+                            @endif>
                                 <div class="col" wire:click="editProduct('{{$products->id}}')"  href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct" ><img class="mr-3" style="height: 70px; width: 70px; object-fit: cover; border-radius:50%; border:1px solid rgb(221, 221, 221);" {{-- src="{{ asset('img/admin/img-category-default.jpg') }}" --}}@if($products->image == '' || $products->image == null) src="{{ asset('img/admin/img-category-default.jpg') }}" @else  src="{{ asset('storage/'.$products->image) }}" @endif alt=""> {{$products->name}}</div>
 
                                 <div  class="col py-3" wire:click="editProduct('{{$products->id}}')"  href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct"    >@if($products->description == '') N/A @else {{$products->description}} @endif </div>
 
-                                <div class="col py-3" wire:click="editProduct('{{$products->id}}')" href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct">R$ @if($products->discount == '' || $products->discount == 0) {{strtr($products->price, '.', ',')}} @else {{strtr($products->discount, '.', ',')}} <img style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt=""> @endif</div>
+                                <div class="col py-3" wire:click="editProduct('{{$products->id}}')" href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct">R$ @if($products->discount == '' || $products->discount == 0 || $products->discount == null) {{strtr($products->price, '.', ',')}} @else  {{strtr($products->discount, '.', ',')}} <img style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt=""> @endif</div>
 
                                 <div style="width: 150px"><button wire:click="updateStatusProduct('{{$products->id}}')" class="btn fw-bold @if($products->status == "Inativo") btn-outline-Dark @else btn-Dark @endif">{{$products->status}}</button></div>
                                 <div class=" d-flex justify-content-center " style="width: 90px">
@@ -112,7 +116,7 @@
                     @endforeach
                 </div>
 
-                <div class="tab-pane fade  @if($tab == 2) show active @endif" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="tab-pane fade  @if($tab == 2) show active @endif" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" >
 
 
                     <div class="mb-5  bg-white  shadow  px-3 pt-3 pb-1 srounded" >
@@ -127,7 +131,11 @@
                         </div>
                         @foreach ($categories as  $category)
                         @foreach ($category->products as $products )
-                            <div  class="anchor-pointer h-product row border py-3 my-1 d-flex align-items-center text-Dark rounded ">
+                            <div  class="anchor-pointer h-product row border py-3 my-1 d-flex align-items-center text-Dark rounded "  @if ($products->status == "Inativo")
+                                style="opacity:0.7; background-color:rgba(175, 175, 175, 0.3);"
+                                @else
+
+                                @endif>
                                 <div class="col" wire:click="editProduct('{{$products->id}}')"  href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct" ><img class="mr-3" style="height: 70px; width: 70px; object-fit: cover; border-radius:50%; border:1px solid rgb(221, 221, 221);" {{-- src="{{ asset('img/admin/img-category-default.jpg') }}" --}} src="{{ asset('storage/'.$products->image) }}" alt=""> {{$products->name}}</div>
 
                                 <div  class="col py-3" wire:click="editProduct('{{$products->id}}')"  href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct"    >@if($products->description == '') N/A @else {{$products->description}} @endif </div>
@@ -216,7 +224,7 @@
                             <option @if(!isset($newCategory)) selected @endif>Selecione a categoria</option>
 
                             @foreach ($modalCategories as $modalCategory)
-                            <option @if($modalCategory->name == $newCategory) selected @endif value="{{$modalCategory->id}}">{{$modalCategory->name}}</option>
+                            <option wire:key="selCategory{{$category_id}}" value="{{$modalCategory->id}}">{{$modalCategory->name}}</option>
                             @endforeach
 
                         </select>
@@ -279,14 +287,14 @@
   </div>
 
   <!-- Modal edit Product-->
-  <div wire:ignore.self class="modal fade " data-bs-backdrop="static" id="modalEditProduct" tabindex="-1" aria-labelledby="modalEditProductLabel" aria-hidden="true">
+  <div wire:ignore.self class="modal fade" data-bs-backdrop="static" id="modalEditProduct" tabindex="-1" aria-labelledby="modalEditProductLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg " >
       <div class="modal-content ">
         <div class="modal-header ">
           <h5 class="modal-title " id="modalEditProductLabel">Editar Produto</h5>
           <button type="button" wire:click="resetModal('product')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form>
+        <form wire:submit.prevente="updateProduct">
             <div class="modal-body">
                 <a class="text-decoration-none fw-bold text-AmareloGema">Imagem do item</a>
                 <div class=" rounded-3 mb-1 border d-flex justify-content-center align-items-center bg-white p-3" style="width: 100%; height: 100%;">
@@ -314,7 +322,7 @@
                         <select wire:model="selCategory" class="form-select" id="floatingSelect" aria-label="Floating label select example">
                             <option @if($newCategory == null) selected @endif>Selecione a categoria</option>
                             @foreach ($modalCategories as $modalCategory)
-                            <option @if($newCategory == $modalCategory->name) selected @elseif($newCategory == null)  @endif value="{{$modalCategory->id}}">{{$modalCategory->name}}</option>
+                            <option value="{{$modalCategory->id}}" wire:key="selCategory{{$category_id}}">{{$modalCategory->name}}</option>
                             @endforeach
                         </select>
                         <label for="floatingSelect">Categoria</label>
@@ -490,6 +498,8 @@
     window.addEventListener('close-modal', event => {
     $( '#modalDeleteProduct' ).modal( 'hide' );
     $( '#modalNewProduct' ).modal( 'hide' );
+    $( '#modalEditProduct' ).modal( 'hide' );
+
 
     });
 

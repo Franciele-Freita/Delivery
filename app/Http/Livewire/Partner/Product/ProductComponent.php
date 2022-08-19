@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Partner\Product;
 use App\Models\CategoryPartner;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Livewire\Component;
 use Livewire\WithFileUploads as LivewireWithFileUploads;
 use Symfony\Component\Console\Input\Input;
@@ -143,6 +144,7 @@ class ProductComponent extends Component
             $this->category_name = '';
         }elseif($item == "product"){
             $this->photo = '';
+            $this->selCategory ='';
             $this->newCategory = null;
             $this->product_name  = '';
             $this->description = '';
@@ -183,7 +185,7 @@ class ProductComponent extends Component
 
         //dd($this->newPrice);
         $validatedData = $this->validate();
-
+        //dd(strtr($validatedData['price'], ',', '.'));
         if($this->discount == null){
             $this->discount = 0;
         }
@@ -205,7 +207,7 @@ class ProductComponent extends Component
             'category_partner_id' => $validatedData['selCategory'],
             'name' => $validatedData['product_name'],
             'description' => $this->description,
-            'price' => $validatedData['price'],
+            'price' => strtr($validatedData['price'], ',', '.'),
             'discount' => $newPrice,
             'image' => $photo,
 
@@ -221,22 +223,76 @@ class ProductComponent extends Component
         $this->resetModal('product');
 
     }
+    public function updateProduct()
+    {
+
+
+
+        $validatedData = $this->validate();
+        $product = Product::find($this->product_id);
+        if($this->discount == null){
+            $this->discount = 0;
+        }
+        if(isset($this->photo)){
+            $photo = $this->photo->store('products', 'public');
+            File::delete('storage/'.$product->image);
+        }elseif(isset($this->imageBd)){
+            $photo = $this->imageBd;
+        }else{
+            $photo = null;
+        }
+        if(isset($this->newPrice)){
+            $newPrice = $this->newPrice;
+        }else{
+            $newPrice = '';
+        }
+
+
+
+         Product::where('id', $this->product_id)->update([
+            'store_id' => '2',
+            'category_partner_id' => $validatedData['selCategory'],
+            'name' => $validatedData['product_name'],
+            'description' => $this->description,
+            'price' => strtr($validatedData['price'], ',', '.'),
+            'discount' => strtr($newPrice, ',', '.'),
+            'image' => $photo,
+        ]);
+
+
+
+
+        session()->flash('message','Produto atualizado com sucesso!');
+
+        $this->dispatchBrowserEvent('close-modal');
+        $this->dispatchBrowserEvent('close-alert');
+
+        //$this->resetInput();
+        $this->resetModal('product');
+
+
+    }
+
     public $imageBd;
     public function editProduct($products_id)
     {
+        $this->product_id = $products_id;
         $product = Product::find($products_id);
 
         $this->imageBd = $product->image;
         $this->photo = null;
+        $this->selCategory = $product->category_partner_id;
         $this->product_name = $product->name;
         $this->description = $product->description;
         $this->price = strtr($product->price, '.', ',');
         $this->newPrice = strtr($product->discount, '.', ',');
-        if($this->newPrice != null || $this->newPrice > 0 || $this->newPrice != '' )
+        if($this->newPrice > 0)
         {
             $this->addDiscount();
             $this->sumDescount();
         }
+
+        //dd($this->category_id);
     }
 
     public function selectImage()
@@ -261,7 +317,7 @@ class ProductComponent extends Component
             'store_id' => Auth::guard('partner')->user()->stores->first()->id,
             'name' => $this->category_name,
         ]);
-        $this->newCategory = $newCategory->name;
+        $this->selCategory = $newCategory->id;
         $this->resetModal('category');
         $this->dispatchBrowserEvent('open-modal');
 
