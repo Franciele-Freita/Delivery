@@ -4,10 +4,10 @@ namespace App\Http\Livewire\Partner\Category;
 
 use Livewire\Component;
 
-class Category extends Component
+class CategoryComponent extends Component
 {
     public function render()
     {
-        return view('livewire.partner.category.category');
+        return view('livewire.partner.category.category-component');
     }
 }
