@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Controller;
+use App\Http\Livewire\Marketplace\CheckInComponent;
+use App\Http\Livewire\Marketplace\MarketplaceComponent;
+use App\Http\Livewire\Partner\Product\ProductComponent;
 use App\Models\Category;
 use App\Models\Store;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +19,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'Controller@index')->name('index');
+Route::get('/', [App\Http\Controllers\Controller::class, 'index'])->name('index');
 
-Route::get('/marketplace', 'Marketplace\MarketplaceController@index')->name('marketplace.index');
+Route::get('/marketplace', MarketplaceComponent::class)->name('marketplace.index');
+//Route::get('/marketplace', [App\Http\Controllers\Marketplace\MarketplaceController::class, 'index'])->name('marketplace.index');
 
-
+Route::get('teste/{carts_id}', CheckInComponent::class)->name('teste');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
@@ -28,6 +32,8 @@ Route::get('/dashboard', function () {
 Route::get('/loja', function () {
     return view('loja.loja');
 })->middleware(['auth'])->name('loja');
+
+
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
@@ -44,6 +50,10 @@ Route::get('search-autocomplete', function(){
     return view('teste');
 })->name('teste.serch');
 
-Route::get('/typeahead_autocomplete/action', 'Controller@action')->name('typeahead_autocomplete.action');
+Route::get('/typeahead_autocomplete/action', [App\Http\Controllers\Controller::class, 'action'])->name('typeahead_autocomplete.action');
+
+//Route::get('testelivewire', ProductComponent::class);
+
+
 
 

@@ -216,8 +216,6 @@
                     <div class="collapse" id="patio-collapse" data-bs-parent="#accordionExample">
                       <ul class="btn-toggle-nav list-unstyled fw-normal small pt-1 overflow-auto h-max-dropdawn">
                         <li class="h-novo  mr-1"><a href="{{ route('product.index') }}" class="link-dark text-white rounded py-2">Produtos</a></li>
-                        <li class="h-novo mr-1"><a href="{{ route('product.register.index') }}" class="link-dark text-white rounded py-2">Cadastro</a></li>
-
                       </ul>
                     </div>
                   </li>
@@ -228,7 +226,6 @@
                   <div class="collapse" id="entrada-collapse" data-bs-parent="#accordionExample">
                     <ul class="btn-toggle-nav list-unstyled fw-normal small pt-1 overflow-auto h-max-dropdawn">
                       <li class="h-novo mr-1"><a href="{{ route('category.index') }}" class="link-dark text-white rounded py-2">Categorias</a></li>
-                      <li class="h-novo  mr-1"><a href="{{ route('category.register.index') }}" class="link-dark text-white rounded py-2">Cdastrar Nova</a></li>
                     </ul>
                   </div>
                 </li>
@@ -239,6 +236,7 @@
                     <div class="collapse" id="admin-collapse" data-bs-parent="#accordionExample">
                       <ul class="btn-toggle-nav list-unstyled fw-normal small pt-1 overflow-auto h-max-dropdawn">
                         <li class="h-novo mr-1"><a href="{{ route('setup.index') }}" class="link-dark text-white rounded py-2">Dados da loja</a></li>
+                        <li class="h-novo mr-1"><a href="" class="link-dark text-white rounded py-2">Financeiro</a></li>
                       </ul>
                     </div>
                   </li>
@@ -277,7 +275,9 @@
 
 
         <div class="bg-Background p-3">
-
+            @if(isset($slot))
+            {{$slot}}
+            @endif
             @yield('conteudo')
         </div>
     </div>

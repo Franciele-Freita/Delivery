@@ -33,7 +33,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->hasOne(CategoryPartner::class);
+        return $this->hasOne(CategoryPartner::class, 'id', 'category_partner_id');
     }
 
     public function cart()

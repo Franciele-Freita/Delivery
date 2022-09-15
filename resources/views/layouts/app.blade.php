@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('slick/slick.css') }}"/>
     <link rel="stylesheet" href="{{ asset('slick/slick-theme.css') }}"/>
+    @livewireStyles
     <title>AQTEM Delivery</title>
 </head>
 <body class="bg-Background d-flex flex-column min-vh-100">
@@ -33,7 +35,7 @@
                                     {{Explode(" ", Auth::user()->name )[0]}}
 
                                 </a>
-                                <a title="Carrinho" href="{{ route('cart.index') }}"><img class="mb-1 position-relative" style="width: 25px" src="{{ asset('img/icon/icon-marketplace/icon-basket.svg') }}" alt="">
+                                <a title="Carrinho" href="{{ route('cart') }}"><img class="mb-1 position-relative" style="width: 25px" src="{{ asset('img/icon/icon-marketplace/icon-basket.svg') }}" alt="">
                                     @if(Auth::user()->cart->sum('qtd') == 0)
                                     @else
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-AmareloGema" style="font-size: 12px">
@@ -127,7 +129,9 @@
         @yield('content')
     </main>
     <main class="container p-3">
-
+        @if(isset($slot))
+        {{$slot}}
+        @endif
         @yield('conteudo')
     </main>
 
@@ -192,68 +196,13 @@
 
         </div>
     </footer>
-
-
-
-
-
-
-
-
     <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ asset('js/bootstrap.js') }}"></script>
     <script type="text/javascript" src="{{ asset('slick/slick.min.js') }}"></script>
 
 
     <script type="text/javascript">
-        $(document).ready(function(){
-            $('.responsive').slick({
-                dots: true,
-                centerMode: false,
-                infinite: true,
-                speed: 300,
-                slidesToShow: 9,
-                slidesToScroll: 1,
-                responsive: [
-                    {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 8,
-                        slidesToScroll: 1,
-                        infinite: true,
-                        dots: true
-                    }
-                    },
-                    {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1
-                    }
-                    },
-                    {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 1,
-                        arrows: false
-                    }
-                    },
-                    {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 1,
-                        arrows: false
-                    }
-                    }
-                    // You can unslick at a given breakpoint now by adding:
-                    // settings: "unslick"
-                    // instead of a settings object
-                ]
 
-            });
-        });
 
         $(document).ready(function(){
             $('.categories').slick({
@@ -332,5 +281,7 @@
             });
         });
     </script>
+    @livewireScripts
+    @yield('scripts')
 </body>
 </html>

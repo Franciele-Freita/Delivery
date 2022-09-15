@@ -1,5 +1,4 @@
 <div>
-
     <div class="p-3">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
@@ -8,6 +7,7 @@
                 </div>
                 <div>
                     <img class="mr-3 anchor-pointer" wire:click="tab('categories')" width="25px" src="{{ asset('img/partner/icon/icon-categories.svg') }}" alt="" data-bs-toggle="tooltip" data-bs-placement="top" title="Mostrar produtos por categoria">
+
                     <img class="anchor-pointer" width="25px" src="{{ asset('img/partner/icon/icon-all.svg') }}" alt="" wire:click="tab('allProducts')" data-bs-toggle="tooltip" data-bs-placement="top" title="Mostrar todos produtos">
 
                 </div>
@@ -17,6 +17,7 @@
                 <button class="btn btn-Dark text-White fw-bold" data-bs-toggle="modal" data-bs-target="#modalNewProduct">Novo produto</button>
             </div>
         </div>
+
         <div class="my-3">
 
             @if(session()->has('message'))
@@ -45,8 +46,12 @@
               <div class="tab-content" id="nav-tabContent">
 
                 <div class="tab-pane fade @if($tab == 1) show active @endif" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                    <div class="mt-3 p-3 fw-bold text-CinzaMedio border border-AmareloGema rounded mb-3">
+                        Aqui estão seus produtos organizados por categoria... altere a visualização atravez dos icones logo acima!
+                     </div>
                     @foreach ($categories as  $category)
-                    <div class="mb-5  bg-white  shadow  px-3 pt-3 pb-1 srounded" >
+                    <div class="mb-5  bg-white  shadow  px-3 pt-3 pb-1 rounded" >
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h4 class="text-Dark mb-1 fw-bold">{{$category->name}}</h4>
@@ -94,7 +99,9 @@
 
                                 <div class="col py-3" wire:click="editProduct('{{$products->id}}')" href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct">R$ @if($products->discount == '' || $products->discount == 0 || $products->discount == null) {{strtr($products->price, '.', ',')}} @else  {{strtr($products->discount, '.', ',')}} <img style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt=""> @endif</div>
 
-                                <div style="width: 150px"><button wire:click="updateStatusProduct('{{$products->id}}')" class="btn fw-bold @if($products->status == "Inativo") btn-outline-Dark @else btn-Dark @endif">{{$products->status}}</button></div>
+                                <div style="width: 150px">
+                                    <button wire:click="updateStatusProduct('{{$products->id}}')" class="btn fw-bold @if($products->status == "Inativo") btn-outline-Dark @else btn-Dark @endif">{{$products->status}}</button>
+                                </div>
                                 <div class=" d-flex justify-content-center " style="width: 90px">
                                     <div class="btn-group dropstart">
                                         <a class="" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -117,34 +124,56 @@
                 </div>
 
                 <div class="tab-pane fade  @if($tab == 2) show active @endif" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" >
-
+                    <div class="mt-3 p-3 fw-bold text-dark border border-AmareloGema rounded mb-3">
+                        Aqui estão todos os seus produtos... altere a visualização atravez dos icones logo acima!
+                     </div>
 
                     <div class="mb-5  bg-white  shadow  px-3 pt-3 pb-1 srounded" >
                         <div class="row  py-1 fw-bold text-Dark rounded">
                             <div class="col">Item</div>
 
                             <div class="col">Descrição</div>
-                            <div class="col">Valor</div>
-                            <div class="col">Categoria</div>
+                            <div style="width: 150px">Valor</div>
+                            <div style="width: 250px">Categoria</div>
                             <div style="width: 150px">Status</div>
                             <div class=" d-flex justify-content-center " style="width: 90px">Ações</div>
                         </div>
-                        @foreach ($categories as  $category)
-                        @foreach ($category->products as $products )
-                            <div  class="anchor-pointer h-product row border py-3 my-1 d-flex align-items-center text-Dark rounded "  @if ($products->status == "Inativo")
+
+                        @foreach ($allProducts as $allProduct)
+                            <div class="anchor-pointer h-product row border py-3 my-1 d-flex align-items-center text-Dark rounded "  @if ($allProduct->status == "Inativo")
                                 style="opacity:0.7; background-color:rgba(175, 175, 175, 0.3);"
                                 @else
 
                                 @endif>
-                                <div class="col" wire:click="editProduct('{{$products->id}}')"  href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct" ><img class="mr-3" style="height: 70px; width: 70px; object-fit: cover; border-radius:50%; border:1px solid rgb(221, 221, 221);" {{-- src="{{ asset('img/admin/img-category-default.jpg') }}" --}} src="{{ asset('storage/'.$products->image) }}" alt=""> {{$products->name}}</div>
-
-                                <div  class="col py-3" wire:click="editProduct('{{$products->id}}')"  href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct"    >@if($products->description == '') N/A @else {{$products->description}} @endif </div>
-
-                                <div class="col py-3" wire:click="editProduct('{{$products->id}}')" href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct">R$ @if($products->discount == '' || $products->discount == 0) {{strtr($products->price, '.', ',')}} @else {{strtr($products->discount, '.', ',')}} <img style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt=""> @endif</div>
-                                <div class="col">
-                                    {{$category->name}}
+                                <div wire:click="editProduct('{{$allProduct->id}}')" class="col" href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct" ><img class="mr-3" style="height: 70px; width: 70px; object-fit: cover; border-radius:50%; border:1px solid rgb(221, 221, 221);" @if ($allProduct->image == null || $allProduct->image == '' )
+                                    src="{{ asset('img/admin/img-category-default.jpg') }}"
+                                @else
+                                    src="{{ asset('storage/'.$allProduct->image) }}"
+                                @endif    alt=""> {{$allProduct->name}}</div>
+                                <div wire:click="editProduct('{{$allProduct->id}}')" class="col" href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct" class="col">
+                                    @if ($allProduct->description == null || $allProduct->description == '')
+                                        N/A
+                                    @else
+                                        {{$allProduct->description}}
+                                    @endif
                                 </div>
-                                <div style="width: 150px"><button wire:click="updateStatusProduct('{{$products->id}}')" class="btn fw-bold @if($products->status == "Inativo") btn-outline-Dark @else btn-Dark @endif">{{$products->status}}</button></div>
+                                <div wire:click="editProduct('{{$allProduct->id}}')" href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct" style="width: 150px">
+                                    {{$allProduct->price}}
+                                </div>
+                                <div wire:click="editProduct('{{$allProduct->id}}')" href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct" class="py-3" style="width: 250px">
+                                    @foreach ($modalCategories as $modalCategory)
+                                        @if ($modalCategory->id == $allProduct->category_partner_id)
+                                        {{$modalCategory->name}}
+                                        @endif
+
+                                    @endforeach
+                                    @if($allProduct->category_partner_id == 0)
+                                        Sem categoria
+                                    @endif
+                                </div>
+                                <div style="width: 150px">
+                                    <button wire:click="updateStatusProduct('{{$allProduct->id}}')" class="btn fw-bold @if($allProduct->status == "Inativo") btn-outline-Dark @else btn-Dark @endif">{{$allProduct->status}}</button>
+                                </div>
                                 <div class=" d-flex justify-content-center " style="width: 90px">
                                     <div class="btn-group dropstart">
                                         <a class="" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -152,18 +181,17 @@
                                         </a>
 
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <li><h5 class="dropdown-header text-AmareloGema">{{$products->name}}</h5></li>
-                                            <li><a class="dropdown-item fw-bold text-Dark"  href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct" wire:click="editProduct('{{$products->id}}')">Editar</a></li>
-                                            <li><a class="dropdown-item fw-bold text-Dark" wire:click="deleteProduct('{{$products->id}}')" href="#" data-bs-toggle="modal" data-bs-target="#modalDeleteProduct">Excluir</a></li>
+                                            <li><h5 class="dropdown-header text-AmareloGema">{{$allProduct->name}}</h5></li>
+                                            <li><a class="dropdown-item fw-bold text-Dark"  href="#" data-bs-toggle="modal" data-bs-target="#modalEditProduct" wire:click="editProduct('{{$allProduct->id}}')">Editar</a></li>
+                                            <li><a class="dropdown-item fw-bold text-Dark" wire:click="deleteProduct('{{$allProduct->id}}')" href="#" data-bs-toggle="modal" data-bs-target="#modalDeleteProduct">Excluir</a></li>
                                         </ul>
                                     </div>
                                 </div>
-
                             </div>
                         @endforeach
-                        @endforeach
-                    </div>
 
+                    </div>
+                    {{ $allProducts->links() }}
 
                 </div>
 
@@ -177,105 +205,200 @@
     </div>
 
 
-  <!-- Modal new product -->
   <div wire:ignore.self class="modal fade " id="modalNewProduct" tabindex="-1" aria-labelledby="modalNewProductLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg " >
+    <div class="modal-dialog  {{-- modal-dialog-centered --}} modal-lg " >
       <div class="modal-content ">
         <div class="modal-header ">
           <h5 class="modal-title " id="modalNewProductLabel">@if($product_name == null )Novo Produto @else {{$product_name}} @endif</h5>
           <button wire:click="resetModal('product')" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form wire:submit.prevent="saveProduct">
-            <div class="modal-body">
+            <div class="modal-body ">
 
-                <a class="text-decoration-none fw-bold text-AmareloGema">Imagem do item</a>
+                {{--  --}}
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button wire:ignore.self class="nav-link @if($tab == 1) active @endif" id="home-tab" data-bs-toggle="tab" data-bs-target="#dataBase" type="button" role="tab" aria-controls="dataBase" aria-selected="true">Dados básicos</button>
+                    </li>
+                    <li  class="nav-item" role="presentation">
+                      <button wire:ignore.self class="nav-link @if($tab == 2) active @endif" id="profile-tab" data-bs-toggle="tab" data-bs-target="#productComponent" type="button" role="tab" aria-controls="productComponent" aria-selected="false">Componentes</button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                    <div wire:ignore.self class="tab-pane fade show active  border p-3 border-top-0" id="dataBase" role="tabpanel" aria-labelledby="dataBase-tab">
+                        <div>
+                            <a class="text-decoration-none fw-bold text-AmareloGema">Imagem do item</a>
 
-                <div class=" rounded-3 mb-1 border d-flex justify-content-center align-items-center bg-white p-3" style="width: 100%; height: 100%;">
-                    <div class="position-relative">
+                            <div class=" rounded-3 mb-1 border d-flex justify-content-center align-items-center bg-white p-3" style="width: 100%; height: 100%;">
+                                <div class="position-relative">
 
-                        <img style="width: 300px; height: 250px; object-fit: cover;" wire:click="selectImage" class="rounded-3 p-1 border" src="@if ($photo) {{ $photo->temporaryUrl() }} @else {{ asset('img/partner/image-store-partner/img-default.png') }} @endif " alt="">
+                                    <img style="width: 300px; height: 250px; object-fit: cover;" wire:click="selectImage" class="rounded-3 p-1 border" src="@if ($photo) {{ $photo->temporaryUrl() }} @else {{ asset('img/partner/image-store-partner/img-default.png') }} @endif " alt="">
 
-                        <div wire:loading wire:target="photo" class="position-absolute top-50 start-50 translate-middle">
+                                    <div wire:loading wire:target="photo" class="position-absolute top-50 start-50 translate-middle">
 
-                            <div class="spinner-border text-warning" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                                        <div class="spinner-border text-warning" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <input class="d-none" id="imageProduct" type="file" wire:model="photo" accept=".JPEG, .JPG, .PNG, .HEIC">
+
                             </div>
 
+                            <a class="text-decoration-none fw-bold text-AmareloGema">Detalhes</a>
+
+                            <div class=" rounded-3 mb-1 border bg-white p-3">
+
+                                <div class="d-flex justify-content-end">
+                                    <a class="text-decoration-none fw-bold text-Dark" href="#" data-bs-toggle="modal" data-bs-target="#modalNewCategory">Nova categoria</a>
+                                </div>
+
+                                <div class="form-floating mb-3">
+
+                                    <select wire:model="selCategory" class="form-select" id="floatingSelect" aria-label="Floating label select example">
+
+
+                                        <option @if(!isset($newCategory)) selected @endif>Selecione a categoria</option>
+
+                                        @foreach ($modalCategories as $modalCategory)
+                                        <option wire:key="selCategory{{$category_id}}" value="{{$modalCategory->id}}">{{$modalCategory->name}}</option>
+                                        @endforeach
+
+                                    </select>
+
+                                    <label for="floatingSelect">Categoria</label>
+                                    @error('selCategory') <span class="text-danger">{{ $message }}</span> @enderror
+
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input wire:model="product_name" type="text" class="form-control" placeholder="name@example.com">
+                                    <label for="floatingInput">Item</label>
+                                    @error('product_name') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="form-floating mb-1">
+                                    <textarea wire:model="description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                    <label for="floatingTextarea2">Descrição</label>
+                                </div>
+                            </div>
+                            <a class="text-decoration-none fw-bold text-AmareloGema">Preço</a>
+                            <div  class=" rounded-3 mb-1 border bg-white p-3">
+                                    @if($discount == true)
+                                    <a class="text-decoration-none fw-bold text-Pitanga" wire:click="removeDiscount" href="#">Remover desconto</a>
+                                @else
+                                    <a class="text-decoration-none fw-bold text-Dark" wire:click="addDiscount" href="#">Aplicar desconto</a>
+                                @endif
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="form-floating mb-3">
+                                                <input wire:model="price" @if($discount == true) readonly @endif type="text" class="form-control maskPrice" placeholder="name@example.com">
+                                                <label for="floatingInput">Preço @if($discount == true)atual @endif</label>
+                                                @error('price') <span class="text-danger">{{ $message }}</span> @enderror
+                                            </div>
+
+                                        </div>
+                                        @if($discount == true)
+                                        <div class="col-4">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" wire:model="newPrice"  wire:keyUp="sumDescount" class="form-control maskPrice" placeholder="name@example.com">
+                                                <label for="floatingInput">Preço novo</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" wire:keyUp="calPercent" wire:model="percent" placeholder="name@example.com">
+                                                <label for="floatingInput">Desconto (%)</label>
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <input class="d-none" id="imageProduct" type="file" wire:model="photo" accept=".JPEG, .JPG, .PNG, .HEIC">
-
-                </div>
-
-                <a class="text-decoration-none fw-bold text-AmareloGema">Detalhes</a>
-
-                <div class=" rounded-3 mb-1 border bg-white p-3">
-
-                    <div class="d-flex justify-content-end">
-                        <a class="text-decoration-none fw-bold text-Dark" href="#" data-bs-toggle="modal" data-bs-target="#modalNewCategory">Nova categoria</a>
-                    </div>
-
-                    <div class="form-floating mb-3">
-
-                        <select wire:model="selCategory" class="form-select" id="floatingSelect" aria-label="Floating label select example">
-
-
-                            <option @if(!isset($newCategory)) selected @endif>Selecione a categoria</option>
-
-                            @foreach ($modalCategories as $modalCategory)
-                            <option wire:key="selCategory{{$category_id}}" value="{{$modalCategory->id}}">{{$modalCategory->name}}</option>
-                            @endforeach
-
-                        </select>
-
-                        <label for="floatingSelect">Categoria</label>
-                        @error('selCategory') <span class="text-danger">{{ $message }}</span> @enderror
 
                     </div>
+                    <div wire:ignore.self class="tab-pane fade border p-3 border-top-0" id="productComponent" role="tabpanel" aria-labelledby="productComponent-tab">
 
-                    <div class="form-floating mb-3">
-                        <input wire:model="product_name" type="text" class="form-control" placeholder="name@example.com">
-                        <label for="floatingInput">Item</label>
-                        @error('product_name') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                    <div class="form-floating mb-1">
-                        <textarea wire:model="description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                        <label for="floatingTextarea2">Descrição</label>
-                    </div>
-                </div>
-                    <a class="text-decoration-none fw-bold text-AmareloGema">Preço</a>
-                <div  class=" rounded-3 mb-1 border bg-white p-3">
-                        @if($discount == true)
-                        <a class="text-decoration-none fw-bold text-Pitanga" wire:click="removeDiscount" href="#">Remover desconto</a>
-                      @else
-                        <a class="text-decoration-none fw-bold text-Dark" wire:click="addDiscount" href="#">Aplicar desconto</a>
-                      @endif
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input wire:model="price" @if($discount == true) readonly @endif type="text" class="form-control maskPrice" placeholder="name@example.com">
-                                    <label for="floatingInput">Preço @if($discount == true)atual @endif</label>
-                                    @error('price') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>
 
-                            </div>
-                            @if($discount == true)
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input type="text" wire:model="newPrice"  wire:keyUp="sumDescount" class="form-control maskPrice" placeholder="name@example.com">
-                                    <label for="floatingInput">Preço novo</label>
+                        <a class="text-decoration-none text-AmareloGema fw-bold mt-3" href="">Componentes</a>
+                        <div class="border rounded fw-bold text-CinzaMedio p-3">
+                            <p>
+                                Aqui você seleciona os items que compõem seu produto, combo ou kit...
+                            </p>
+                            <div>
+                                <div class="">
+                                    <button class="btn btn-AmareloGema fw-bold" {{-- wire:click="addP" --}} type="button" data-bs-toggle="modal" data-bs-target="#testeModal">Adicionar</button>
                                 </div>
                             </div>
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" wire:keyUp="calPercent" wire:model="percent" placeholder="name@example.com">
-                                    <label for="floatingInput">Desconto (%)</label>
-                                </div>
-                            </div>
-                            @endif
                         </div>
-                </div>
+                        <br>
+                        <a class="text-decoration-none text-AmareloGema fw-bold mt-3" href="">Itens adicionados</a>
+
+                        <div class=" rounded p-3 border">
+                            <div class="">
+                                <div class="@if($items == []) d-none @else d-flex @endif bd-highlight">
+                                    <div class="fw-bold flex-grow-1 bd-highlight  mr-1">
+                                        Item
+                                    </div>
+                                    <div class="fw-bold bd-highlight mr-1 " style="width: 100px">
+                                        Qtd.
+                                    </div>
+                                    <div class="fw-bold bd-highlight" style="width: 50px">
+                                        Excluir
+                                    </div>
+                                </div>
+                            </div>
+                            @forelse($items as $item)
+                                {{-- <div wire:key="Item{{$loop->index}}"> --}}
+                                    {{-- <input wire:model="items.{{$loop->index}}.p" type="text"> --}}
+
+                                        <div class="d-flex bd-highlight">
+                                            <div class="mb-3 flex-grow-1 bd-highlight  mr-1" {{-- wire:key="Item{{$loop->index}}" --}}>
+                                                <input type="text" wire:model="items.{{$loop->index}}.name" disabled class="form-control" id="floatingInput" placeholder="name@example.com">
+                                            </div>
+                                            <div class="mb-3 bd-highlight mr-1 " style="width: 100px">
+                                                <input type="number" wire:model="items.{{$loop->index}}.qtdProduct" class="form-control">
+                                            </div>
+                                            <div class="mb-3 bd-highlight" style="width: 50px">
+                                                <input type="button" class="form-control btn btn-Pitanga text-light" value="X" wire:click="removeText({{$loop->index}})">
+                                            </div>
+                                        </div>
+
+                                        {{-- <div class="col p-3 " wire:key="Item{{$loop->index}}">
+
+                                            <input disabled class="form-control" wire:model="items.{{$loop->index}}.name" type="text"/>
+
+                                        </div> --}}
+{{--                                         <div class="col-2 p-3 ">
+                                            <input class="form-control" value="1" type="text"/>
+                                        </div> --}}
+                                        {{-- <div >
+                                            {{$item['name']}}
+                                        </div >--}}
+{{--                                         <div class="col-1 p-3 ">
+                                            <button class="btn btn-Pitanga" wire:click="removeText({{$loop->index}})" type="button">X</button>
+                                        </div> --}}
+
+
+                                {{--  --}}
+                            @empty
+                                <div class="fw-bold text-CinzaMedio">Aqui apareceram os componentes selecionados para este item.</div>
+
+                            @endforelse
+                        </div>
+
+
+
+
+
+
+
+
+
+                    </div>
+                  </div>
+                {{--  --}}
             </div>
             <div class="modal-footer">
               <button type="button" wire:click="resetModal('product')" class="btn btn-outline-Dark" data-bs-dismiss="modal">Fechar</button>
@@ -286,16 +409,20 @@
     </div>
   </div>
 
+
+
+
+
   <!-- Modal edit Product-->
-  <div wire:ignore.self class="modal fade" data-bs-backdrop="static" id="modalEditProduct" tabindex="-1" aria-labelledby="modalEditProductLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg " >
+  <div wire:ignore.self class="modal fade "  data-bs-backdrop="static" id="modalEditProduct" tabindex="-1" aria-labelledby="modalEditProductLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-lg " >
       <div class="modal-content ">
         <div class="modal-header ">
-          <h5 class="modal-title " id="modalEditProductLabel">Editar Produto</h5>
-          <button type="button" wire:click="resetModal('product')" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title " id="modalEditProductLabel">Editar produto</h5>
+          <button wire:click="resetModal('product')" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form wire:submit.prevente="updateProduct">
-            <div class="modal-body">
+        <form wire:submit.prevent="updateProduct">
+             <div class="modal-body">
                 <a class="text-decoration-none fw-bold text-AmareloGema">Imagem do item</a>
                 <div class=" rounded-3 mb-1 border d-flex justify-content-center align-items-center bg-white p-3" style="width: 100%; height: 100%;">
                     <div class="position-relative">
@@ -372,8 +499,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="button" wire:click="resetModal('product')" class="btn btn-outline-Dark" data-bs-dismiss="modal">Fechar</button>
-              <button type="submit" class="btn btn-Dark text-White fw-bold">Salvar</button>
+                <button type="button" wire:click="resetModal('product')" class="btn btn-outline-Dark" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-Dark text-White fw-bold">Salvar</button>
             </div>
         </form>
       </div>
@@ -415,7 +542,7 @@
         </div>
         <form wire:submit.prevent="destroyCategory">
             <div class="modal-body">
-                Todos os produtos vinculados a esta categoria deixarão de ser exibidos na loja! tem certeza que deseja prosseguir?
+                Todos os produtos vinculados a esta categoria deixarão de ser exibidos na loja! tem certeza que deseja prosseguir? <br>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-Dark" data-bs-dismiss="modal">Fechar</button>
@@ -475,8 +602,34 @@
     </form>
     </div>
   </div>
-{{-- end modal edit category --}}
+    {{-- end modal edit category --}}
+    <!-- Modal -->
+    <div class="modal fade" id="testeModal" tabindex="-1" aria-labelledby="testeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="testeModalLabel">Ingredientes</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                @foreach ( $allProducts as $allProduct )
+                <div type="" class="anchor-pointer h-product border p-3 rounded mb-1" wire:click="selProduct('{{$allProduct->id}}')" data-bs-toggle="modal" data-bs-target="#modalNewProduct">
+                    {{$allProduct->name}}
+                </div>
+
+                @endforeach
+                </div>
+            </div>
+            {{-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div> --}}
+        </div>
+        </div>
+    </div>
 </div>
+
 
 @section('scripts')
 
@@ -488,7 +641,6 @@
 
     window.addEventListener('maskDiscount', event=> {
         $(".maskPrice").mask("999.999.990,00", {reverse: true})
-
     });
 
     window.addEventListener('openPathImage', event => {
@@ -499,7 +651,8 @@
     $( '#modalDeleteProduct' ).modal( 'hide' );
     $( '#modalNewProduct' ).modal( 'hide' );
     $( '#modalEditProduct' ).modal( 'hide' );
-
+    $( '#modalDeleteCategory' ).modal( 'hide' );
+    $( '#testeModal' ).modal( 'hide' );
 
     });
 
@@ -507,6 +660,7 @@
         $( '#modalNewCategory' ).modal( 'hide' );
         $( '#modalNewProduct' ).modal( 'show' );
     });
+
     window.addEventListener('close-alert', event => {
         $(document).ready(function(){
         setTimeout(function() {
@@ -515,12 +669,8 @@
         });
         }, 3000);
         });
-
     });
 
-
-
-
-
 </script>
+
 @endsection

@@ -56,6 +56,10 @@ class Store extends Model
     {
        return $this->hasMany(Purchase::class);
     }
+    public function cart()
+    {
+        return $this->hasMany(Cart::class, 'store_id', 'id');
+    }
 
 
 

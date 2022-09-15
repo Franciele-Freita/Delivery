@@ -1,6 +1,4 @@
-@extends('welcome')
 
-@section('stores')
 
 <style>
     .banner-store{
@@ -39,14 +37,14 @@
     }
 </style>
     {{-- <h2 class="my-3 py-5">Resultado para <strong>"{{mb_strtoupper($search)}}"</strong></h2> --}}
-        @if($stores->count() == 0)
+{{--         @if($stores->count() == 0)
         <h3 class="mt-5">Resultado para a pesquisa: <strong>{{mb_strtoupper($pesquisa)}}</strong></h3>
             <div class="d-flex align-items-center justify-content-center  my-3">
                 <p>Ops... Não encontramos o que estava procurando!</p>
             </div>
         @else
         <div class="row">
-<h3 class="mt-5">Resultado para a pesquisa: <strong>{{mb_strtoupper($pesquisa)}}...</strong></h3>
+    <h3 class="mt-5">Resultado para a pesquisa: <strong>{{mb_strtoupper($pesquisa)}}...</strong></h3>
         @foreach ($stores as $store)
 
                     @if($store->status == 1)
@@ -92,7 +90,7 @@
 
         </div>
 @endif
-
+ --}}
 
                         {{-- <div class="">
                             <div class="row">

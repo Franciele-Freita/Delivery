@@ -1,4 +1,4 @@
-@extends('layouts.painel-partner')
+{{-- @extends('layouts.painel-partner')
 
 @section('conteudo')
 
@@ -101,3 +101,13 @@
 
 
 
+ --}}
+
+
+ @extends('layouts.painel-partner')
+
+@section('conteudo')
+
+@livewire('partner.category.category-component')
+
+@endsection

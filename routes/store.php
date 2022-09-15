@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => '/store', 'namespace' => 'Store'], function() {
     Route::middleware(['auth:partner'])->group(function () {
     });
-    Route::get('/dados-loja', 'StoreController@index')->name('partner.details.index');
-    Route::get('/dados-loja/{user}/{address}', 'StoreController@show')->name('partner.details.show');
-    Route::post('/dados-loja', 'StoreController@store')->name('partner.details.store');
-    Route::get('/Welcome', 'StoreController@welcome')->name('partner.store.Welcome');
+    Route::get('/dados-loja', [App\Http\Controllers\Store\StoreController::class, 'index'])->name('partner.details.index');
+    Route::get('/dados-loja/{user}/{address}', [App\Http\Controllers\Store\StoreController::class, 'show'])->name('partner.details.show');
+    Route::post('/dados-loja', [App\Http\Controllers\Store\StoreController::class, 'store'])->name('partner.details.store');
+    Route::get('/Welcome', [App\Http\Controllers\Store\StoreController::class, 'welcome'])->name('partner.store.Welcome');
 
 });
 

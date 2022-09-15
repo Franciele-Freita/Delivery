@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div id="carouselExampleFade" class="carousel slide carousel-fade bg-AzulPiscina m-0 p-0" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">

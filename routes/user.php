@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Livewire\User\Profile\ProfileComponent;
 use Illuminate\Support\Facades\Route;
 
 /* Admin Auth */
@@ -18,11 +19,11 @@ Route::group(['prefix' => '/cliente', 'namespace' => 'User'], function() {
 
     });
 
-    Route::get('/profile', 'UserController@index')->name('profile.index');
-    Route::get('/purchase', 'PurchaseController@index')->name('purchase.index');
+    //Route::get('/profile', [App\Http\Controllers\User\UserController::class, 'index'])->name('profile.index');
+    Route::get('/purchase', [App\Http\Controllers\User\PurchaseController::class, 'index'])->name('purchase.index');
 });
 
-
+Route::get('/cliente/profile', ProfileComponent::class)->name('profile.index');
 
 /* end routes Admin */
 

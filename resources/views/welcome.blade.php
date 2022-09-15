@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('conteudo')
+{{-- @livewire('marketplace.marketplace-component') --}}
+
+
 {{-- store.marketplace.storeSearch --}}
+{{--
 <form action="{{ route('store.marketplace.storeSearch') }}" method="POST">
     @csrf
     <div class="input-group mb-3">
@@ -56,9 +60,14 @@
         </form>
         @endforeach
     </div>
+
 </div>
+
 @yield('stores')
+--}}
 @endsection
+
+
 
 
 

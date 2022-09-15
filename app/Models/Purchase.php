@@ -9,25 +9,25 @@ class Purchase extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'cod',
+        'purchase_id',
+        'cart_id',
         'user_id',
         'store_id',
-        'product_id',
-        'qtd',
-        'price',
-        'status',
+        'payment_id'
     ];
 
-    public function user()
+    public function Payment()
     {
-        return $this->belongsTo(Users::class);
+        return $this->hasOne(Payment::class, 'id', 'payment_id');
     }
-    public function store()
+
+    public function Details()
     {
-        return $this->belongsTo(Store::class);
+        return $this->hasMany(CartDetails::class, 'cart_id', 'cart_id');
     }
-    public function products()
+
+    public function Store()
     {
-        return $this->hasMany(Products::class);
+        return $this->hasOne(Store::class, 'id', 'store_id');
     }
 }

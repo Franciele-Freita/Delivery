@@ -2,16 +2,23 @@
 
 namespace App\Http\Livewire\Partner\Product;
 
+use App\Models\Category;
 use App\Models\CategoryPartner;
+use App\Models\livewireTeste;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Livewire\Component;
 use Livewire\WithFileUploads as LivewireWithFileUploads;
 use Symfony\Component\Console\Input\Input;
+use Livewire\WithPagination;
 
 class ProductComponent extends Component
 {
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
 
     use LivewireWithFileUploads;
     public $status;
@@ -24,15 +31,17 @@ class ProductComponent extends Component
     public $newPrice, $percent;
     public $tab = 1;
 
-
+public $testeproduto;
 
     public function render()
     {
-
+        //$this->testeSave();
         $categories = CategoryPartner::with('products')->whereHas('products')->where('store_id', Auth::guard('partner')->user()->stores->first()->id)->get();
+
+        $allProducts= Product::with('category')->where('store_id', Auth::guard('partner')->user()->stores->first()->id)->orderBy('name')->paginate(10);
+
         $modalCategories = CategoryPartner::with('products')->where('store_id', Auth::guard('partner')->user()->stores->first()->id)->get();
-        //dd( $categories);
-        return view('livewire.partner.product.product-component', ['products' => $products = Product::get(), 'categories' => $categories, 'modalCategories' => $modalCategories]);
+        return view('livewire.partner.product.product-component', ['products' => $products = Product::get(), 'categories' => $categories, 'modalCategories' => $modalCategories, 'allProducts' => $allProducts])->layout('layouts.painel-partner');
     }
 
     public function updateStatusProduct($products_id)
@@ -86,7 +95,19 @@ class ProductComponent extends Component
 
     public function destroyCategory()
     {
-        dd("aqui");
+
+        $category = CategoryPartner::find($this->category_id);
+
+        Product::where('category_partner_id', $this->category_id)->update([
+            'category_partner_id' => 0,
+        ]);
+
+        CategoryPartner::find($this->category_id)->delete();
+
+        session()->flash('message','Categoria excluida com sucesso!');
+        $this->dispatchBrowserEvent('close-modal');
+        $this->dispatchBrowserEvent('close-alert');
+
     }
 
     public function addDiscount()
@@ -97,9 +118,6 @@ class ProductComponent extends Component
         $this->discount = true;
 
         $this->dispatchBrowserEvent('maskDiscount');
-
-
-
     }
 
     public function sumDescount()
@@ -183,11 +201,19 @@ class ProductComponent extends Component
     public function saveProduct()
     {
 
-        //dd($this->newPrice);
+/*         for($c=0; $c < count($this->items); $c++ ){
+            livewireTeste::create([
+                            'number' => $this->items[$c]['name'],
+                            'name' => $this->items[$c]['qtdProduct'],
+                        ]);
+                        /* 'id' => $product->id, 'name' => $product->name, 'qtdProduct' => 1  */
+            /*}
+
+        dd('teste salvo no banco de dados'); */
         $validatedData = $this->validate();
         //dd(strtr($validatedData['price'], ',', '.'));
         if($this->discount == null){
-            $this->discount = 0;
+            $this->discount = 0.00;
         }
 
         if(isset($this->photo)){
@@ -196,9 +222,10 @@ class ProductComponent extends Component
             $photo = null;
         }
         if(isset($this->newPrice)){
-            $newPrice = $this->photo->store('products', 'public');
+            $newPrice = $this->newPrice;
+            //dd($newPrice);
         }else{
-            $newPrice = '';
+            $newPrice = 0.00;
         }
 
         /* $image = $this->photo->store('products', 'public'); */
@@ -208,7 +235,7 @@ class ProductComponent extends Component
             'name' => $validatedData['product_name'],
             'description' => $this->description,
             'price' => strtr($validatedData['price'], ',', '.'),
-            'discount' => $newPrice,
+            'discount' => strtr($newPrice,',', '.'),
             'image' => $photo,
 
         ]);
@@ -225,13 +252,10 @@ class ProductComponent extends Component
     }
     public function updateProduct()
     {
-
-
-
         $validatedData = $this->validate();
         $product = Product::find($this->product_id);
-        if($this->discount == null){
-            $this->discount = 0;
+        if($this->discount == null || $this->discount == ""){
+            $this->discount = 0.00;
         }
         if(isset($this->photo)){
             $photo = $this->photo->store('products', 'public');
@@ -241,13 +265,13 @@ class ProductComponent extends Component
         }else{
             $photo = null;
         }
-        if(isset($this->newPrice)){
+        if($this->newPrice != null){
             $newPrice = $this->newPrice;
         }else{
-            $newPrice = '';
+            $newPrice = 0.00;
         }
 
-
+        //dd($this->newPrice);
 
          Product::where('id', $this->product_id)->update([
             'store_id' => '2',
@@ -338,4 +362,62 @@ class ProductComponent extends Component
             'photo' => 'image|max:1024',
         ]);
     }
+
+    /* TESTE */
+    public $product_component_id;
+    public $items = [];
+
+/*     public function addP()
+    {
+        //dd($this->product_component_id);
+        $product = Product::find($this->product_component_id);
+        array_push($this->items, [ 'product_component_id' => $this->product_component_id, 'name' =>$product->name, 'image' => $product->image ]);
+        //dd($this->items);
+    }
+ */
+    public function removeText($index)
+    {
+        unset($this->items[$index]);
+        $this->items = array_values($this->items);
+    }
+
+    /*  teste de gravação de array multiplo no banc de dados */
+    public function testeSave()
+    {
+        $teste = [
+            ['number' => '1',
+            'name' => 'primeiro',],
+            ['number' => '2',
+            'name' => 'segundo',]
+        ];
+
+        //dd(count($teste)< 1);
+
+
+        for($c=0; $c < count($teste); $c++ ){
+            livewireTeste::create([
+                            'number' => $teste[$c]['number'],
+                            'name' => $teste[$c]['name'],
+                        ]);
+                        /* 'id' => $product->id, 'name' => $product->name, 'qtdProduct' => 1  */
+            }
+    }
+    public function selProduct($product_id)
+    {
+        $product = Product::find($product_id);
+        array_push($this->items, ['id' => $product->id, 'name' => $product->name, 'qtdProduct' => 1 ]);
+        $this->dispatchBrowserEvent('close-modal');
+
+        //dd($items);
+    }
+    public $qtdProduct;
+    public function updatedItems($value, $key)
+    {
+        $index = preg_replace("/[^0-9]/", "", $key);
+
+        $this->items[$index]["qtdProduct"] = $value;
+
+
+    }
+    /* FIM TESTE */
 }

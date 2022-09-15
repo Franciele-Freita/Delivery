@@ -15,13 +15,11 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->string('cod');
+            $table->string('purchase_id');
+            $table->foreignId('cart_id')->constrained('cart');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('store_id')->constrained('stores');
-            $table->foreignId('product_id')->constrained('products');
-            $table->string('qtd');
-            $table->string('price');
-            $table->string('status');
+            $table->foreignId('payment_id')->constrained('payment');
             $table->timestamps();
         });
     }

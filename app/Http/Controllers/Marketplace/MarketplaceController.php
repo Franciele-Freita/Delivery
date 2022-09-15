@@ -90,7 +90,7 @@ class MarketplaceController extends Controller
        // foreach($products as $product){
         //   echo $product->name. "<br>";
        // }
-        return view('marktplace.search',['categories' => $categories, 'stores'=> $stores, 'pesquisa' => $pesquisa]);
+        return view('marketplace.search',['categories' => $categories, 'stores'=> $stores, 'pesquisa' => $pesquisa]);
         /* return view('marketplace.search', ['stores'=> $stores]); */
     }
 
@@ -98,7 +98,7 @@ class MarketplaceController extends Controller
     {
         $regions = Regions::Paginate(5);
 
-         return view('marktplace.location', ['regions' => $regions]);
+         return view('marketplace.location', ['regions' => $regions]);
 
     }
 
@@ -129,27 +129,12 @@ class MarketplaceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($store_id)
     {
 
-        $store = Store::where('id', $id)->first();
+        $store = Store::where('id', $store_id)->first();
 
-
-
-
-/*         foreach($store->categories as $category){
-            echo $category->name;
-            foreach($category->products as $product){
-                echo $product->name;
-            }
-        } */
-
-/*         $store = Store::where('id', $id)->first();
-        $products = DB::table('product')->where('store_id', $id)->get(); */
-
-        //dd($products);
-        return view('marktplace.store', ['store' => $store]);
-        //dd($store);
+        return view('marketplace.store', ['store' => $store]);
     }
 
     /**
