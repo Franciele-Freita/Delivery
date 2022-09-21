@@ -28,7 +28,7 @@ class CartComponent extends Component
         $details = CartDetails::where('cart_id', $detail->cart_id)->get();
 
         $cart = Cart::where('cart_id', $detail->cart_id)->get();
-
+        /* dd(count($details)); */
         if(count($details) <= 1 && $detail->qtd <= 1){
             //dd("carrinho");
             Cart::where('cart_id', $detail->cart_id)->delete();
@@ -67,8 +67,8 @@ class CartComponent extends Component
     {
         $detail = CartDetails::find($detail_id);
         $details = CartDetails::where('cart_id', $detail->cart_id)->get();
-
-        if(count($details) <= 1 && $detail->qtd <= 1){
+        /* dd(count($details)); */
+        if(count($details) <= 1){
             //dd("carrinho");
             Cart::where('cart_id', $detail->cart_id)->delete();
             $detail->delete();

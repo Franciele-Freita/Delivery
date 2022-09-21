@@ -15,19 +15,19 @@
                     </div>
                     <img class="anchor-pointer" src="{{ asset('img/icon/icon-marketplace/icon-edit.svg') }}" alt="" style="width: 25px"  data-bs-toggle="modal" data-bs-target="#selAddressModal">
                 </address>
-                <hr>
                 <div>
                     <h5 class="text-Dark mb-3 fw-bold">Forma de Pagamento:</h5>
                     <div class="row">
-                            @foreach ($paymentForms as $payment)
-                                <div class="col-6 mb-3">
-                                    <div wire:click="selPaymentForm('{{$payment->id}}')" class="anchor-pointer p-3 rounded border @if ($payment->id == session()->get('payment'))
-                                        payment-active
-                                    @endif">
-                                        <img  src="{{ asset('storage/'.$payment->image) }}" alt="" style="width: 30px;"> {{$payment->name}}
-                                    </div>
-                                </div>
-                            @endforeach
+                        @foreach ($paymentForms as $payment)
+                        <div wire:click="selPaymentForm('{{$payment->id}}')" class="col-3">
+                            <div class="d-flex flex-column align-items-center anchor-pointer h-product rounded  @if ($payment->id == session()->get('payment'))
+                                payment-active
+                            @endif">
+                                <img src="{{ asset('storage/'.$payment->image) }}" alt="" style="height: 50px">
+                                 <b>{{$payment->name}}</b>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                             Subtotal
                         </div>
                         <div class="">
-                            R$ {{number_format($detail->sum('total'), 2 , ',', '.')}}
+                            R$ {{number_format($cart->details->sum('total'), 2 , ',', '.')}}
                         </div>
                     </div>
                     <div class="d-flex justify-content-between fw-bold">
@@ -70,7 +70,7 @@
                             <h4>Total</h4>
                         </div>
                         <div class="mb-3">
-                            <h4>R$ {{number_format($detail->sum('total'), 2 , ',', '.')}}</h4>
+                            <h4>R$ {{number_format($cart->details->sum('total'), 2 , ',', '.')}}</h4>
                         </div>
                     </div>
                 </div>

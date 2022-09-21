@@ -9,7 +9,7 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
-
+    @livewireStyles
 
     <!-- Custom styles for this template -->
   </head>
@@ -40,6 +40,12 @@
                     Categorias
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.faq.index') }}" class="nav-link {{ Route::is('admin.faq.index') ? 'active' : '' }} text-white" data-bs-toggle="link">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+                    FAQ
+                    </a>
+                </li>
             </ul>
 
             <div class="dropdown px-3">
@@ -64,6 +70,13 @@
                     @yield('nav')
                 </div>
             </div>
+            <main class="container p-3">
+                @if(isset($slot))
+                {{$slot}}
+                @endif
+                @yield('conteudo')
+
+            </main>
 
 
 
@@ -73,7 +86,7 @@
             </div>
         </div>
     </main>
-
+    @livewireScripts
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
   </body>

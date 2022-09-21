@@ -44,7 +44,7 @@ class User extends Authenticatable
 
     public function addresses()
     {
-        return $this->hasMany(Address::class, 'id_user', 'id');
+        return $this->hasMany(Address::class, 'user_id', 'id');
     }
 
     public function noteToStore()
@@ -60,6 +60,11 @@ class User extends Authenticatable
     public function purchases()
     {
         return $this->hasMany(Purchase::class);
+    }
+
+    public function AdditionalData()
+    {
+        return $this->hasOne(AdditionalUserData::class);
     }
 
 }

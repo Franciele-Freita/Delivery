@@ -22,7 +22,7 @@ class ProductComponent extends Component
 
     use LivewireWithFileUploads;
     public $status;
-    public $product_name, $description;
+    public $product_name, $description, $sku;
     public $product_id, $category_id;
     public $discount;
     public $category_name, $newCategory, $selCategory;
@@ -30,6 +30,8 @@ class ProductComponent extends Component
     public $price;
     public $newPrice, $percent;
     public $tab = 1;
+    public $all;
+
 
 public $testeproduto;
 
@@ -197,40 +199,36 @@ public $testeproduto;
     {
         $this->validateOnly($fields);
     }
-    public $all;
+
     public function saveProduct()
     {
-
-/*         for($c=0; $c < count($this->items); $c++ ){
-            livewireTeste::create([
-                            'number' => $this->items[$c]['name'],
-                            'name' => $this->items[$c]['qtdProduct'],
-                        ]);
-                        /* 'id' => $product->id, 'name' => $product->name, 'qtdProduct' => 1  */
-            /*}
-
-        dd('teste salvo no banco de dados'); */
+        /* validação dos dados */
         $validatedData = $this->validate();
-        //dd(strtr($validatedData['price'], ',', '.'));
-        if($this->discount == null){
-            $this->discount = 0.00;
-        }
+        /* ============= */
 
+        /* Definindo o sku id do loja e o numero maximo de sku + 1  */
+        $max_id_product = Product::where('store_id', auth()->guard('partner')->user()->stores->first()->id)->max('sku');
+        $sku = auth()->guard('partner')->user()->stores->first()->id.++$max_id_product;
+        /* ============= */
+
+        /* Validação da foto do produto e gravação na pasta*/
         if(isset($this->photo)){
             $photo = $this->photo->store('products', 'public');
         }else{
             $photo = null;
         }
-        if(isset($this->newPrice)){
-            $newPrice = $this->newPrice;
-            //dd($newPrice);
-        }else{
-            $newPrice = 0.00;
-        }
+        /* ============== */
 
-        /* $image = $this->photo->store('products', 'public'); */
+        /* Verifica se existe desconto e se não houver aplica o valor 0 */
+        if($this->discount == true || $this->newPrice != null){
+            $newPrice = $this->newPrice;
+        }else{
+            $newPrice = 0;
+        }
+        /* ============== */
         Product::create([
-            'store_id' => '2',
+            'sku' => $sku,
+            'store_id' => auth()->guard('partner')->user()->stores->first()->id,
             'category_partner_id' => $validatedData['selCategory'],
             'name' => $validatedData['product_name'],
             'description' => $this->description,
@@ -242,11 +240,8 @@ public $testeproduto;
 
 
         session()->flash('message','Produto cadastrado com sucesso!');
-
         $this->dispatchBrowserEvent('close-modal');
         $this->dispatchBrowserEvent('close-alert');
-
-        //$this->resetInput();
         $this->resetModal('product');
 
     }

@@ -21,25 +21,34 @@
     @endif
     <section class="position-relative mb-3">
         <div >
-            <img class="banner-store" src="{{ asset('img/partner/image-store-partner/banner/'.$store->store_banner) }}" alt="banner da loja">
+            <img class="banner-store shadow" src="{{ asset('img/partner/image-store-partner/banner/'.$store->store_banner) }}" alt="banner da loja">
         </div>
-        <div class="position-absolute bottom-0 rounded-circle  start-50 translate-middle-x mb-2">
+        {{-- <div class="position-absolute bottom-0 rounded-circle  start-50 translate-middle-x mb-2">
             <img class="logo-store border border-4  mt-3 shadow-bold" src="{{ asset('img/partner/image-store-partner/logo/'.$store->image_store) }}" alt="imagem logo da loja">
-        </div>
+        </div> --}}
+
+
     </section>
     <section class="d-flex align-items-center">
         <div class="mr-3">
-            <h3>{{$store->fantasy_name}}</h3>
+            <div>
+                <img class="mr-3 logo-store border border-4  mt-3 shadow" src="{{ asset('img/partner/image-store-partner/logo/'.$store->image_store) }}" alt="imagem logo da loja">
+
+                <div class="d-flex align-items-center mb-2">
+                    <h3 class="mr-3">{{$store->fantasy_name}}</h3>
+                    <div>
+                        @if($store->notes->count() != 0)
+                            <div class="fst-italic fw-bold text-AmareloGema ">
+                                <img class="rating-star-icon" src="{{ asset('img/admin/icon/icon-rating-star-yellow.svg') }}" alt="" >
+                                {{number_format($store->notes()->sum('note') / $store->notes->count(), 1, '.',',')}}
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div>
-            @if($store->notes->count() != 0)
-                <div class="fst-italic fw-bold text-AmareloGema ">
-                    <img class="rating-star-icon" src="{{ asset('img/admin/icon/icon-rating-star-yellow.svg') }}" alt="" >
-                    {{number_format($store->notes()->sum('note') / $store->notes->count(), 1, '.',',')}}
-                </div>
-            @endif
-        </div>
     </section>
     <section class="d-flex justify-content-between align-items-center p-3 rounded mb-3 shadow-sm bg-white">
         <div class="">
@@ -77,32 +86,41 @@
                     @foreach ($products as $product)
                         @if($product->discount > 0 )
                             <div class="col-4" >
-                                <div class="border rounded shadow-sm my-1 d-flex h-product anchor-pointer" wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
-                                    <div class="p-1">
-                                        <img class="rounded border" src="{{ asset('storage/'.$product->image) }}" alt="foto do produto" style="height: 120px; width: 140px; object-fit:cover;">
-                                    </div>
-                                    <div class="px-3 py-1 d-flex flex-column align-self-stretch justify-content-between vw-100">
-                                        <div class=" fw-bold">
-                                            {{$product->name}}
+                                <div class="position-relative">
+                                    <div class="border rounded shadow-sm my-1 d-flex h-product anchor-pointer" wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
+                                        <div class="p-1">
+                                            <img class="rounded border" src="{{ asset('storage/'.$product->image) }}" alt="foto do produto" style="height: 120px; width: 140px; object-fit:cover;">
                                         </div>
-                                        <div>
-                                            {{mb_strimwidth($product->description, 0, 50, "...")}}
-                                        </div>
-                                        <div class="d-flex justify-content-end">
-                                            @if($product->discount <= 0)
-                                            <div class="fw-bold promotion d-flex align-items-center">
-                                                <div ><small>R$ </small>{{number_format($product->price, 2 , ",", ".")}}</div>
+                                        <div class="px-3 py-1 d-flex flex-column align-self-stretch justify-content-between vw-100">
+                                            <div class=" fw-bold">
+                                                {{$product->name}}
                                             </div>
-                                            @else
-                                            <div class="fw-bold promotion d-flex align-items-center">
-                                                <img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt="">
-                                                <div class="mr-1"><small>R$ </small>{{number_format($product->discount, 2 , ",", ".")}} <del class="text-CinzaClaro" style="font-size: 12px"><small>R$ </small> {{number_format($product->price, 2 , ",", ".")}}</del></div>
+                                            <div>
+                                                {{mb_strimwidth($product->description, 0, 50, "...")}}
+                                            </div>
+                                            <div class="d-flex justify-content-end">
+                                                @if($product->discount <= 0)
+                                                <div class="fw-bold promotion d-flex align-items-center">
+                                                    <div ><small>R$ </small>{{number_format($product->price, 2 , ",", ".")}}</div>
+                                                </div>
+                                                @else
+                                                <div class="fw-bold promotion d-flex align-items-center">
+                                                    <img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt="">
+                                                    <div class="mr-1"><small>R$ </small>{{number_format($product->discount, 2 , ",", ".")}} <del class="text-CinzaClaro" style="font-size: 12px"><small>R$ </small> {{number_format($product->price, 2 , ",", ".")}}</del></div>
+
+                                                </div>
+                                                @endif
 
                                             </div>
-                                            @endif
-
                                         </div>
                                     </div>
+                                    @if(isset($product->Favorite))
+                                        <img class="p-2 position-absolute top-0 end-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-check.svg') }}" alt="" style="width: 40px">
+                                    @else
+                                        <img class="p-2 position-absolute top-0 end-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-outline.svg') }}" alt="" style="width: 40px">
+
+                                    @endif
+
                                 </div>
                             </div>
                         @endif
@@ -120,34 +138,43 @@
                 <hr>
                 <div class="row">
                     @foreach ( $category->products as $product)
-                        <div class="col-4">
-                                <div class="border rounded shadow-sm my-1 d-flex h-product anchor-pointer" wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal" >
-                                    <div class="p-1">
-                                        <img class="rounded border" src="{{ asset('storage/'.$product->image) }}" alt="foto do produto" style="height: 120px; width: 140px; object-fit:cover;">
+                    <div class="col-4" >
+                        <div class="position-relative">
+                            <div class="border rounded shadow-sm my-1 d-flex h-product anchor-pointer" wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
+                                <div class="p-1">
+                                    <img class="rounded border" src="{{ asset('storage/'.$product->image) }}" alt="foto do produto" style="height: 120px; width: 140px; object-fit:cover;">
+                                </div>
+                                <div class="px-3 py-1 d-flex flex-column align-self-stretch justify-content-between vw-100">
+                                    <div class=" fw-bold">
+                                        {{$product->name}}
                                     </div>
-                                    <div class="px-3 py-1 d-flex flex-column align-self-stretch justify-content-between vw-100">
-                                        <div class=" fw-bold">
-                                            {{$product->name}}
+                                    <div>
+                                        {{mb_strimwidth($product->description, 0, 50, "...")}}
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        @if($product->discount <= 0)
+                                        <div class="fw-bold promotion d-flex align-items-center">
+                                            <div ><small>R$ </small>{{number_format($product->price, 2 , ",", ".")}}</div>
                                         </div>
-                                        <div class="d-flex justify-content-end">
-                                            @if($product->discount <= 0)
-                                            <div class="fw-bold promotion d-flex align-items-center">
-                                                <div ><small>R$ </small>{{number_format($product->price, 2 , ",", ".")}}</div>
-                                            </div>
-                                            @else
-                                            <div class="fw-bold promotion d-flex align-items-center">
-                                                <img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt="">
-                                                <div class="mr-1"><small>R$ </small>{{number_format($product->discount, 2 , ",", ".")}} <del class="text-CinzaClaro" style="font-size: 12px"><small>R$ </small>{{number_format($product->price, 2 , ",", ".")}}</del></div>
-
-                                            </div>
-                                            @endif
+                                        @else
+                                        <div class="fw-bold promotion d-flex align-items-center">
+                                            <img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt="">
+                                            <div class="mr-1"><small>R$ </small>{{number_format($product->discount, 2 , ",", ".")}} <del class="text-CinzaClaro" style="font-size: 12px"><small>R$ </small> {{number_format($product->price, 2 , ",", ".")}}</del></div>
 
                                         </div>
+                                        @endif
+
                                     </div>
                                 </div>
+                            </div>
+                            @if(isset($product->Favorite))
+                                <img class="p-2 position-absolute top-0 end-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-check.svg') }}" alt="" style="width: 40px">
+                            @else
+                                <img class="p-2 position-absolute top-0 end-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-outline.svg') }}" alt="" style="width: 40px">
 
-
+                            @endif
                         </div>
+                    </div>
                     @endforeach
                 </div>
             </div>
@@ -162,8 +189,11 @@
                 <div class="modal-body">
                     <img class="rounded border mb-3 position-relative" src="{{ asset('storage/'.$product_image) }}" alt="" style="width: 100%">
                     <button type="button" class="btn-close position-absolute top-0 end-0 mt-4 mr-4 p-2 bg-AmareloGema" wire:click="resetModal" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <p class="text-AmareloGema fw-bold m-0">{{$product_category}}</p>
+
                     <h3 class="">{{$product_name}}</h3>
+{{--                     <div class="d-flex">
+                        <p class="text-CinzaMedio fw-bold mr-1">{{$product->Store->fantasy_name}}</p><p class="text-CinzaMedio">  •  </p><p class="ml-1 text-AmareloGema fw-bold">{{$product_category}}</p>
+                    </div> --}}
                     @if($product_discount > 0)
                         <p class="fw-bold"><img class=""  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt=""> R$ {{number_format($product_discount, 2 , ",", ".")}} <del class="text-CinzaClaro" style="font-size: 15px;">R$ {{number_format($product_price, 2 , ",", ".")}}</del></p>
                     @else
@@ -187,7 +217,7 @@
                                 </div>
                             </div>
                             <div class="p-2 w-100 bd-highlight">
-                                <button type="button" class="btn btn-AmareloGema text-CinzaMedio fw-bold form-control px-5" wire:click="teste('{{$product_id}}')">
+                                <button type="button" class="btn btn-AmareloGema text-CinzaMedio fw-bold form-control px-5" wire:click="addCart('{{$product_id}}')">
                                     Adicionar por
                                     @if($product_discount > 0)
                                         R$ {{number_format(($product_discount * $product_qtd), 2 , ",", ".") }}
@@ -215,7 +245,7 @@
                     <div class="px-3 pb-3">
                         <h3 class="text-center mb-3">Você só pode adicionar itens de um restaurante por vez!</h3>
                         <p class="text-CinzaMedio text-center">Deseja esvaziar a sacola e adicionar este item?</p>
-                        <button class="btn btn-AmareloGema form-control fw-bold text-CinzaMedio">Esvaziar sacola e adicionar</button>
+                        <button wire:click="deleteCart('{{$product_id}}')" class="btn btn-AmareloGema form-control fw-bold text-CinzaMedio">Esvaziar sacola e adicionar</button>
 
                     </div>
 
@@ -232,6 +262,8 @@
 <script>
     window.addEventListener('close-modal', event => {
         $( '#showProductModal' ).modal( 'hide' );
+        $( '#alertModal' ).modal( 'hide' );
+
     });
     window.addEventListener('open-modal', event => {
         $( '#alertModal' ).modal( 'show' );
@@ -245,5 +277,6 @@
         }, 3000);
         });
     });
+
 </script>
 @endsection

@@ -122,5 +122,9 @@ var reader_logo = new FileReader();
 photo_logo.addEventListener('click',() =>{
     file_logo.click();
 });
+
+
+
+
 /*  */
 

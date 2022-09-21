@@ -11,6 +11,7 @@ class Address extends Model
     protected $fillable = [
         'user_id',
         'recipient',
+        'type',
         'cep',
         'street',
         'number',
@@ -24,6 +25,6 @@ class Address extends Model
 
     public function user()
     {
-        return $this->belongsTo('Users', 'id_user', 'id');
+        return $this->belongsTo('Users', 'user_id', 'id');
     }
 }

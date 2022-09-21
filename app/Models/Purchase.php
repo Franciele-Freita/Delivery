@@ -30,4 +30,8 @@ class Purchase extends Model
     {
         return $this->hasOne(Store::class, 'id', 'store_id');
     }
+    public function Purchase()
+    {
+        return $this->hasMany(PurchaseStatus::class);
+    }
 }

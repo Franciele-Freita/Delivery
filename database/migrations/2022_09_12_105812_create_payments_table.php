@@ -16,6 +16,8 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('description')->nullable();
+            $table->foreignId('payment_nfe_id')->constrained('means_of_payment_nfe');
             $table->string('image');
             $table->timestamps();
         });

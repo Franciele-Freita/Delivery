@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Marketplace;
 use App\Models\Cart;
 use App\Models\CartDetails;
 use App\Models\CategoryPartner;
+use App\Models\FavoriteProduct;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,6 @@ class StoreComponent extends Component
     public function showProduct($product_id)
     {
         $product = Product::find($product_id);
-
         $this->product_id = $product_id;
         $this->product_image = $product->image;
         $this->product_category = $product->category->name;
@@ -68,7 +68,7 @@ class StoreComponent extends Component
     {
         ++$this->product_qtd;
     }
-    public function teste($product_id)
+    public function addCart($product_id)
     {
         $user = Auth::user();
         $cart_id = Cart::where('user_id', $user->id)/* ->where('status', 0) */->max('cart_id');
@@ -78,6 +78,12 @@ class StoreComponent extends Component
         //dd($cart_id);
         $cart = Cart::where('user_id', $user->id)->where('status', 0)->get();
         //dd($cart);
+
+        if($this->product_discount != 0){
+            $price = $this->product_discount;
+        }else{
+            $price = $this->product_price;
+        }
         if($user){
             /* se ja existe um carrinho aberto e qual é a loja... se for da mesma loja pode lançar se não mandar um aviso */
             /* verificar se o mesmo produto ja foi lançado no carrinho, se já somente acrescentar a qtd */
@@ -88,8 +94,8 @@ class StoreComponent extends Component
                         'store_id' => $this->store_id,
                         'product_id' => $this->product_id,
                         'qtd' => $this->product_qtd,
-                        'price'=> $this->product_price,
-                        'total' => $this->product_qtd * $this->product_price,
+                        'price'=> $price,
+                        'total' => $this->product_qtd * $price,
                         /* 'commit'*/
                         ]);
                         session()->flash('message','Produto adicionado no carrinho!');
@@ -112,8 +118,8 @@ class StoreComponent extends Component
                         'store_id' => $this->store_id,
                         'product_id' => $this->product_id,
                         'qtd' => $this->product_qtd,
-                        'price'=> $this->product_price,
-                        'total' => $this->product_qtd * $this->product_price,
+                        'price'=> $price,
+                        'total' => $this->product_qtd * $price,
                         /* 'commit'*/
                         ]);
 
@@ -125,9 +131,38 @@ class StoreComponent extends Component
         }else{
             return redirect()->route('login');
         }
+        $this->resetModal();
+    }
 
+    public function favorite($product_id)
+    {
+        $favorite_product = Product::find($product_id);
 
-
+        if(isset($favorite_product->Favorite)){
+            $favorite_product->Favorite->delete();
+        }else{
+            FavoriteProduct::create([
+                'user_id' => Auth::user()->id,
+                'store_id' => $this->store_id,
+                'product_id' => $product_id,
+            ]);
+        }
 
     }
+
+    public function deleteCart($product_id)
+    {
+        $cart = Cart::where('user_id', auth()->user()->id)->where('status', 0)->first();
+
+        for($i = 0; count($cart->Details) > $i ; ++$i){
+            $cart->Details[$i]->delete();
+        }
+        $cart->delete();
+        $this->addCart($product_id);
+        $this->dispatchBrowserEvent('close-modal');
+    }
 }
+
+/*
+PROTOCOLO VIVO AGENDAMENTO TECNICO DAS 13:30 16:00H
+210920223421740 */

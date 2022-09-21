@@ -5,10 +5,12 @@ namespace App\Http\Livewire\Marketplace;
 use App\Models\City;
 use App\Models\Estate;
 use App\Models\Estates;
+use App\Models\FavoriteStore;
 use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Str;
 
@@ -48,6 +50,22 @@ class MarketplaceComponent extends Component
     {
         $id = $store_id;
         return redirect()->route('store.marketplace.show',['id' => $id]);
+
+    }
+
+    public function favorite($store_id)
+    {
+
+        $favorite_store = Store::find($store_id);
+
+        if(isset($favorite_store->Favorite)){
+            $favorite_store->Favorite->delete();
+        }else{
+            FavoriteStore::create([
+                'user_id' => Auth::user()->id,
+                'store_id' => $favorite_store->id,
+            ]);
+        }
 
     }
 }

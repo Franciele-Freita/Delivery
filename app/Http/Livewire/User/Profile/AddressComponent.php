@@ -10,50 +10,55 @@ use Livewire\Component;
 
 class AddressComponent extends Component
 {
-    public $address_id, $recipient, $cep, $street, $number, $complement, $reference, $district, $city, $estate;
+    public $address_id, $recipient, $type, $cep, $street, $number, $complement, $reference, $district, $city, $estate, $main;
     public function render()
     {
         $user = Auth::user();
         $addresses = Address::where('user_id', $user->id)->get();
-        return view('livewire.user.profile.address-component', ['addresses' => $addresses]);
+        return view('livewire.user.Profile.address-component', ['addresses' => $addresses]);
 
     }
 
-    protected $rules = [
-        'recipient' => 'required',
-        'cep' => 'required',
-        'street' => 'required',
-        'number' => 'required',
-        'complement' => '',
-        'reference'=> '',
-        'district' => 'required',
-        'city' => 'required',
-        'estate' => 'required',
-    ];
-
-    public function updatedCep()
+    protected function rules()
     {
-        $url = "https://viacep.com.br/ws/{$this->cep}/json/";
-        $data = file_get_contents($url);
-        $data = json_decode($data);
-
-        if($data != null){
-            $this->street = $data->logradouro;
-            $this->complement = $data->complemento;
-            $this->district = $data->bairro;
-            $this->city = $data->localidade;
-            $this->estate = $data->uf;
-        }
+        return [
+            'recipient' => 'required',
+            'type' => 'required',
+            'cep' => 'required',
+            'street' => 'required',
+            'number' => 'required',
+            'complement' => '',
+            'reference'=> '',
+            'district' => 'required',
+            'city' => 'required',
+            'estate' => 'required',
+        ];
 
     }
+    public function updated($fields)
+    {
+        $this->validateOnly($fields);
+    }
+
 
     public function newAddress()
     {
         $this->validate();
+        $addresses = Address::where('user_id', Auth::user()->id)->get();
+        if($this->main == true && count($addresses) >= 1){
+            Address::where('user_id', Auth::user()->id)->update([
+                'main' => 0,
+            ]);
+        }elseif(count($addresses) == 0){
+            $this->main = true;
+        }else{
+            $this->main = false;
+        }
 
-        Address::create([
+        $address = Address::create([
             'user_id' => Auth::user()->id,
             'recipient' => $this->recipient,
+            'type' => $this->type,
             'cep' => $this->cep,
             'street' => $this->street,
             'number' => $this->number,
@@ -62,6 +67,7 @@ class AddressComponent extends Component
             'district' => $this->district,
             'city' => $this->city,
             'estate' => $this->estate,
+            'main' => $this->main,
         ]);
 
         $this->dispatchBrowserEvent('close-modal');
@@ -77,6 +83,7 @@ class AddressComponent extends Component
         $address = Address::find($address_id);
 
         $this->recipient = $address->recipient;
+        $this->type = $address->type;
         $this->cep = $address->cep;
         $this->street = $address->street;
         $this->number = $address->number;
@@ -85,13 +92,35 @@ class AddressComponent extends Component
         $this->district = $address->district;
         $this->city = $address->city;
         $this->estate = $address->estate;
+        $this->main = $address->main;
+    }
+
+    public function updateMainButton($address_id)
+    {
+        //dd($address_id);
+        $addresses = Address::where('user_id', Auth::user()->id)->get();
+        $address = Address::find($address_id);
+        //dd($address->main);
+            Address::where('user_id', Auth::user()->id)->update([
+                'main' => false,
+            ]);
+
+            $address->main = true;
+            $address->save();
 
     }
 
     public function editAddress()
     {
         $this->validate();
-
+        $addresses = Address::where('user_id', Auth::user()->id)->get();
+        if($this->main == true && count($addresses) >= 1){
+            Address::where('user_id', Auth::user()->id)->update([
+                'main' => 0,
+            ]);
+        }else{
+            $this->main = false;
+        }
         $address = Address::where('id', $this->address_id)->update([
             'recipient' => $this->recipient,
             'cep' => $this->cep,
@@ -102,6 +131,7 @@ class AddressComponent extends Component
             'district' => $this->district,
             'city' => $this->city,
             'estate' => $this->estate,
+            'main' => $this->main,
         ]);
 
         $this->dispatchBrowserEvent('close-modal');
@@ -119,12 +149,12 @@ class AddressComponent extends Component
     {
         Address::where('id', $this->address_id)->delete();
         $this->dispatchBrowserEvent('close-modal');
-
     }
 
     public function resetModal()
     {
         $this->recipient = '';
+        $this->type = '';
         $this->cep = '';
         $this->street = '';
         $this->number = '';
@@ -133,5 +163,35 @@ class AddressComponent extends Component
         $this->district = '';
         $this->city = '';
         $this->estate = '';
+        $this->main = false;
+        $this->resetValidation();
     }
+
+    public function searchCep()
+    {
+        $this->validate([
+            'cep' => 'required|min:8|max:8',
+        ]);
+        $url = "https://viacep.com.br/ws/{$this->cep}/json/";
+        $data = file_get_contents($url);
+        $data = json_decode($data);
+        if(isset($data->erro)){
+            //dd($data);
+            $this->addError('cep', 'cep invalido ou não encontrado');
+            $this->street = '';
+            $this->complement = '';
+            $this->district = '';
+            $this->city = '';
+            $this->estate = '';
+        }else{
+        if($data != null){
+            $this->street = $data->logradouro;
+            $this->complement = $data->complemento;
+            $this->district = $data->bairro;
+            $this->city = $data->localidade;
+            $this->estate = $data->uf;
+        }
+    }
+    }
+
 }

@@ -9,7 +9,7 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable = [
-
+        'sku',
         'store_id',
         'category_partner_id',
         'name',
@@ -39,6 +39,11 @@ class Product extends Model
     public function cart()
     {
         return $this->hasOne(Cart::class,'id', 'product_id');
+    }
+
+    public function Favorite()
+    {
+        return $this->hasOne(FavoriteProduct::class);
     }
 
 

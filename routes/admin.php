@@ -8,7 +8,9 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Livewire\Admin\FaqsComponent;
 use App\Http\Livewire\Admin\PaymentFormsComponent;
+use App\Http\Livewire\User\Profile\FaqComponent;
 use Illuminate\Support\Facades\Route;
 
 /* Admin Auth */
@@ -43,6 +45,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function() {
         Route::get('/', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.index');
 
         Route::get('/categoria', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.category.index');
+
         Route::get('/categoria/register', [App\Http\Controllers\Admin\CategoryController::class, 'erroindex'])->name('admin.category.erroindex');
         Route::post('/categoria', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('admin.category.store');
         Route::post('/categoria/update', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('admin.category.update');
@@ -52,6 +55,8 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function() {
     });
 
 });
+Route::get('/admin/faq', FaqsComponent::class)->name('admin.faq.index')->middleware(['auth:admin']);
+
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('admin/users', [App\Http\Controllers\Controller::class, 'userIndex'])->name('admin.userIndex');
 
@@ -60,6 +65,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::get('/partners', [App\Http\Controllers\Controller::class, 'partnerIndex'])->name('admin.partnerIndex');
 
-
 /*  */
-Route::get('payment-forms', PaymentFormsComponent::class)->name('payment');

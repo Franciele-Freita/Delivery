@@ -17,6 +17,7 @@ class CreateAddressesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('recipient');
+            $table->string('type');
             $table->string('cep');
             $table->string('street');
             $table->string('number');

@@ -36,46 +36,62 @@
 
 
     {{-- Stores --}}
+    <style>
 
+    </style>
     <article>
         <div class="row">
             @forelse($stores as $store)
-                <div class="col-12 col-sm-6 col-lg-4 my-3" wire:click="showStore('{{$store->id}}')">
-                    <div class="mr-3 d-flex flex-row align-items-center">
-                        <div>
-                            @if(isset($store->image_store))
-                            <img class="icon-loja-inicio" src="{{ asset("img/partner/image-store-partner/logo/$store->image_store") }}" alt="">
-                            @else
-                            <img class="icon-loja-inicio" src="{{ asset("img/partner/image-store-partner/banner-loja1.jpg") }}" alt="">
-                            @endif
-
+            <div class="col-4" @if($store->status == false) style="opacity: 0.7; " @endif>
+                <div class="position-relative">
+                    <div wire:click="showStore('{{$store->id}}')" class="border rounded shadow-sm my-1 d-flex h-product anchor-pointer" {{-- @if($store->status == false) style=" background-color:rgb(230, 230, 230);" @endif --}}>
+                        <div class="p-1">
+                            <img class="rounded border" src="{{ asset("img/partner/image-store-partner/logo/$store->image_store") }}" alt="foto do produto" style="height: 120px; width: 140px; object-fit:cover;">
                         </div>
-                        <div class="mx-3">
+                        <div class="px-3 py-1 d-flex flex-column align-self-stretch justify-content-between vw-100">
+                            <div>
+                                <div class="fw-bold">
+                                    {{$store->fantasy_name}}
+                                </div>
+                                <div class="fst-italic text-AzulPiscina fw-bold d-flex">
+                                    <div class="mr-1">
+                                        {{$store->branch_of_activity}}
+                                    </div> @if($store->notes->count() != 0)
 
-                            <div class="fw-bold">
-                                {{$store->fantasy_name}}
+                                    @endif
+                                </div>
+                                @if($store->notes->count() != 0)
+                                <div class="fst-italic fw-bold text-AmareloGema">
+                                    <img class="rating-star-icon" src="{{ asset('img/admin/icon/icon-rating-star-yellow.svg') }}" alt="" >
+                                    {{number_format($store->notes()->sum('note') / $store->notes->count(), 1, '.',',')}}
+                                </div>
+                                @endif
                             </div>
-                            <div class="fst-italic text-break " style="width: 160px">
-                                {{$store->branch_of_activity}}
-                            </div>
-                            @if($store->notes->count() != 0)
-                            <div class="fst-italic fw-bold text-AmareloGema">
-                                <img class="rating-star-icon" src="{{ asset('img/admin/icon/icon-rating-star-yellow.svg') }}" alt="" >
-                                {{number_format($store->notes()->sum('note') / $store->notes->count(), 1, '.',',')}}
-                            </div>
-                            @endif
+                            <div class="d-flex justify-content-end">
 
+                            </div>
                         </div>
                     </div>
+                    <div class="position-absolute top-0 end-0 h-100 border-start">
+                        <div>
+                            <img class="p-2" wire:click="favorite('{{$store->id}}')" @if(isset($store->Favorite)) src="{{ asset('img/icon/icon-marketplace/icon-favorite-check.svg') }}" @else src="{{ asset('img/icon/icon-marketplace/icon-favorite-outline.svg') }}" @endif alt="" style="width: 40px">
+                        </div>
+                        <div>
+                            <img class="p-2" src="{{ asset('img/icon/icon-marketplace/icon-orders.svg') }}" alt="" style="width: 40px">
+                        </div>
+                        <div>
 
+                            <img class="p-2" wire:click="favorite('{{$store->id}}')" @if ($store->status == true) src="{{ asset('img/icon/icon-marketplace/icon-open-door.svg') }}" @else src="{{ asset('img/icon/icon-marketplace/icon-close-door.svg') }}" @endif alt="" style="width: 40px">
+                        </div>
+                    </div>
                 </div>
+            </div>
 
             @empty
                 Não há resultados.
             @endforelse
         </div>
     </article>
-
     {{-- end Stores --}}
 
 

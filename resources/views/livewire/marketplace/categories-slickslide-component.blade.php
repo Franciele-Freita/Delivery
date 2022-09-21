@@ -1,7 +1,8 @@
 <div>
     <div class="responsive">
         @foreach ($categories as $category)
-            <a class="text-decoration-none text-CinzaMedio" wire:click="teste('{{$category->id}}')" type="submit">
+
+             <a class="text-decoration-none text-CinzaMedio" wire:click="teste('{{$category->id}}')">
                 <div class="d-flex flex-column align-items-center justify-content-center">
                     <div>
                         <img class="view_icon_category rounded" src="{{ asset("img/admin/icon/$category->img_category") }}" alt="">
@@ -19,12 +20,14 @@
     <script>
         $(document).ready(function(){
             $('.responsive').slick({
+
                 dots: true,
                 centerMode: false,
                 infinite: true,
                 speed: 300,
-                slidesToShow: 9,
+                slidesToShow: 8,
                 slidesToScroll: 1,
+                centerMode: true,
                 responsive: [
                     {
                     breakpoint: 1024,

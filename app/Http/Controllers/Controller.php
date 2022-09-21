@@ -16,6 +16,7 @@ class Controller extends BaseController
 
     public function index()
     {
+        session()->forget('auth');
         $categories = Category::get();
         return view('presentation', ['categories' => $categories]);
     }

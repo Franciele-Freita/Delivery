@@ -61,7 +61,10 @@ class Store extends Model
         return $this->hasMany(Cart::class, 'store_id', 'id');
     }
 
-
+    public function Favorite()
+    {
+        return $this->hasOne(FavoriteStore::class);
+    }
 
 
 

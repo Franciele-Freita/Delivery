@@ -14,4 +14,11 @@ class RequestComponent extends Component
         return view('livewire.partner.requests.request-component', ['purchases' => $purchases])->layout('layouts.painel-partner');
     }
 
+/*     public function completeOrder()
+    {
+    Order::where('id', $id)->update(['status', 'completed']);
+
+    $this->emit('orderCompleted');
+    } */
+
 }

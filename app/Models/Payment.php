@@ -11,10 +11,17 @@ class Payment extends Model
     protected $fillable = [
         'name',
         'image',
+        'description',
+        'payment_nfe_id',
     ];
 
     public function Purchases()
     {
         return $this->hasMany(Purchase::class, 'payment_id', 'id');
+    }
+
+    public function PaymentReference()
+    {
+        return $this->hasOne(PaymentMethodReferenceNfe::class, 'id', 'payment_reference_nfe_id');
     }
 }

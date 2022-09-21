@@ -455,6 +455,7 @@
                         <label for="floatingSelect">Categoria</label>
                         @error('selCategory') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
+
                     <div class="form-floating mb-3">
                         <input wire:model="product_name" type="text" class="form-control" placeholder="name@example.com">
                         <label for="floatingInput">Item</label>
@@ -634,7 +635,6 @@
 @section('scripts')
 
 <script>
-
     $(document).ready(function(){
         $(".maskPrice").mask("999.999.990,00", {reverse: true})
     });

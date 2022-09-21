@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Payment;
 use App\Models\Purchase;
+use App\Models\PurchaseStatus;
 use App\Models\Store;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -34,7 +35,7 @@ class CheckInComponent extends Component
             $address_id = session()->get('address');
             $address = Address::find($address_id);
         }else{
-            $address = Address::where('id_user', $user->id)->first();
+            $address = Address::where('user_id', $user->id)->first();
         }
         $paymentForms = Payment::orderBy('id')->get();
 
@@ -50,6 +51,7 @@ class CheckInComponent extends Component
         session()->put([
             'address' => $address_id,
         ]);
+        dd(session()->get('address'));
         $this->dispatchBrowserEvent('close-modal');
     }
 
@@ -62,7 +64,6 @@ class CheckInComponent extends Component
 
     public function saveRequest()
     {
-
         $user = Auth::user();
         $cart = Cart::find($this->cart_id);
         $purchase_id = Purchase::where('store_id', $cart->store_id)->max('purchase_id');
@@ -71,9 +72,9 @@ class CheckInComponent extends Component
         }
 
         //$payment_id = session()->get('payment');
-        Purchase::create([
+        $purchase = Purchase::create([
             'purchase_id' => ++$purchase_id,
-            'cart_id' => $this->cart_id,
+            'cart_id' => $cart->cart_id,
             'user_id' => $user->id,
             'store_id' => $cart->store_id,
             'payment_id' => session()->get('payment'),
@@ -83,12 +84,15 @@ class CheckInComponent extends Component
             'status' => 1,
         ]);
 
+        PurchaseStatus::create([
+            'purchase_id' => $purchase->id,
+            'status_id' => 1,
+        ]);
 
-
-
-
+        redirect()->route('marketplace.index');
 
         /*
+        se não ouver session address usar o endereço principal
         id do endereço
         id da forma de pagamento
         id do cart
@@ -96,6 +100,11 @@ class CheckInComponent extends Component
 
         trazer o carte para finalizado
         */
+    }
+
+    public function resetModal()
+    {
+        # code...
     }
 
 }
