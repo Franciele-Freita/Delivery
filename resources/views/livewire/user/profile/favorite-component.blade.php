@@ -125,7 +125,7 @@
                                         </div>
                                         <div>
 
-                                            <img class="p-2" wire:click="favoriteStore('{{$favorite->store->id}}')" @if ($favorite->store->status
+                                            <img class="p-2" @if ($favorite->store->status
                                             == true) src="{{ asset('img/icon/icon-marketplace/icon-open-door.svg') }}" @else src="{{
                                             asset('img/icon/icon-marketplace/icon-close-door.svg') }}" @endif alt="" style="width: 40px">
                                         </div>

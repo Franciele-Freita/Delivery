@@ -1,8 +1,8 @@
 <div>
     <div class="row text-CinzaMedio">
         <h5>Meus pedidos</h5>
-
         @forelse ($purchases as $purchase)
+
         <div class="col-6">
             <div class="mb-3  border p-3 rounded ">
                 <div class="d-flex align-items-center mb-3">
@@ -14,15 +14,37 @@
                 <div class="text-muted d-flex justify-content-between" style="font-size: 15px">
                     <div class="d-flex">
                         <div>
-                            Pedido concluido • N°
+                            Pedido
+                            <span class="badge rounded-pill @if($purchase->Status->last()->status_id == 5) bg-danger @elseif($purchase->Status->last()->status_id == 4) bg-success @elseif($purchase->Status->last()->status_id == 1) bg-secondary @else bg-primary @endif">
+
+                                {{$purchase->Status->last()->Reference->status}}
+                              </span>
+                             • N°
+
                         </div>
                         <div class="fw-bold ml-1">
                             {{$purchase->purchase_id}}
                         </div>
                     </div>
-                    <div>
+                    {{--
+                        Reclame aqui
+                        procom.com
+                        Sofri acidente
+                        Coloquei meu carro para consetar
+                        Mapfre não quer ocnsertar por inteiro
+                        Demoreou vistoria
+                        So consegue carro reserva se trocar oficina
+                        Ja questionei
+                        Carro pra trabalho
+                        Não resolve
+
+
+                        --}}
+
+
+{{--                     <div>
                         {{($purchase->created_at)->format('d/m/Y')}} {{($purchase->created_at)->format('H:i')}}
-                    </div>
+                    </div> --}}
                 </div>
                 <hr>
                 <div class="text-muted">

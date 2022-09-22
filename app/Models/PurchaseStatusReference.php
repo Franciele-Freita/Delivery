@@ -12,8 +12,8 @@ class PurchaseStatusReference extends Model
         'status',
     ];
 
-    public function PurchaseStatus()
+    public function Status()
     {
-        return $this->hasMany(PurchaseStatus::class);
+        return $this->hasMany(PurchaseStatus::class,'status_id', 'id');
     }
 }

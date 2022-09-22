@@ -38,7 +38,7 @@
                         data-bs-target="#showAddress">Editar</a>
                     <a class="text-decoration-none text-AzulPiscina fw-bold anchor-pointer"
                         wire:click="deleteAddress('{{$address->id}}')" data-bs-toggle="modal"
-                        data-bs-target="#deleteAddress">Excluir</a>
+                        data-bs-target="#deleteAddressModal">Excluir</a>
                 </div>
             </div>
         </div>
@@ -304,29 +304,27 @@
                 </div>
             </div>
         </div>
-
-        <!-- Modal -->
-        <div wire:ignore.self class="modal fade" id="deleteAddress" tabindex="-1" aria-labelledby="deleteAddressLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteAddressLabel">Excluir endereço</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Tem certeza que deseja excluir este endereço?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-CinzaClaro fw-bold"
-                            data-bs-dismiss="modal">Não</button>
-                        <button type="button" wire:click="destroyAddress"
-                            class="btn btn-AmareloGema fw-bold text-CinzaMedio">Sim, Pode excluir!</button>
-                    </div>
-                </div>
+    </div>
+  <!-- Modal delete address-->
+  <div wire:ignore.self class="modal fade" id="deleteAddressModal" tabindex="-1" aria-labelledby="deleteAddressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAddressLabel">Excluir endereço</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir este endereço?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-CinzaClaro fw-bold"
+                    data-bs-dismiss="modal">Não</button>
+                <button type="button" wire:click="destroyAddress"
+                    class="btn btn-AmareloGema fw-bold text-CinzaMedio">Sim, Pode excluir!</button>
             </div>
         </div>
     </div>
+  </div>
 
 </div>
 

@@ -70,6 +70,7 @@ class StoreComponent extends Component
     }
     public function addCart($product_id)
     {
+
         $user = Auth::user();
         $cart_id = Cart::where('user_id', $user->id)/* ->where('status', 0) */->max('cart_id');
         if($cart_id == null){
@@ -85,22 +86,37 @@ class StoreComponent extends Component
             $price = $this->product_price;
         }
         if($user){
+
             /* se ja existe um carrinho aberto e qual é a loja... se for da mesma loja pode lançar se não mandar um aviso */
             /* verificar se o mesmo produto ja foi lançado no carrinho, se já somente acrescentar a qtd */
             if(count($cart) > 0){
                 if($cart->first()->store_id == $this->store_id){
-                    CartDetails::create([
-                        'cart_id' => $cart_id,
-                        'store_id' => $this->store_id,
-                        'product_id' => $this->product_id,
-                        'qtd' => $this->product_qtd,
-                        'price'=> $price,
-                        'total' => $this->product_qtd * $price,
-                        /* 'commit'*/
-                        ]);
-                        session()->flash('message','Produto adicionado no carrinho!');
-                        $this->dispatchBrowserEvent('close-modal');
-                        $this->dispatchBrowserEvent('close-alert');
+                    $cart_detail = CartDetails::where('product_id', $product_id)->first();
+                    /* dd($cart_detail); */
+                    if($cart_detail){ // <- aqui tem um erro de array
+                       $cart_detail->update([
+                            'qtd' => $this->product_qtd + $cart_detail->qtd,
+                            'total' => ($this->product_qtd + $cart_detail->qtd) * $price,
+                            /* 'commit'*/
+                            ]);
+                            session()->flash('message','Produto adicionado no carrinho!');
+                            $this->dispatchBrowserEvent('close-modal');
+                            $this->dispatchBrowserEvent('close-alert');
+                    }else{
+                        dd($cart->first()->details->first()->product_id);
+                            CartDetails::create([
+                                'cart_id' => $cart_id,
+                                'store_id' => $this->store_id,
+                                'product_id' => $this->product_id,
+                                'qtd' => $this->product_qtd,
+                                'price'=> $price,
+                                'total' => $this->product_qtd * $price,
+                                /* 'commit'*/
+                                ]);
+                                session()->flash('message','Produto adicionado no carrinho!');
+                                $this->dispatchBrowserEvent('close-modal');
+                                $this->dispatchBrowserEvent('close-alert');
+                    }
                 }else{
                     $this->dispatchBrowserEvent('close-modal');
                     $this->dispatchBrowserEvent('open-modal');

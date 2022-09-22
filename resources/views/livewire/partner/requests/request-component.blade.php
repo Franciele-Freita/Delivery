@@ -37,8 +37,8 @@
                         {{($purchase->created_at)->format('H:i')}}
                     </div>
                 </div>
-                <div class="col"><img class="mr-1" src="{{ asset('storage/'.$purchase->Payment->image) }}" alt="" style="width: 30px">{{$purchase->Payment->name}}</div>
-                <div class="col"><span class="badge bg-secondary rounded-pill py-1 px-3">Concluido</span></div>
+                <div class="col"><img class="mr-1" src="{{ asset('storage/'.$purchase->Payment->image) }}" alt="" style="width: 50px">{{$purchase->Payment->name}}</div>
+                <div class="col"><span class="badge  @if($purchase->Status->last()->status_id == 5) bg-danger @elseif($purchase->Status->last()->status_id == 4) bg-success @elseif($purchase->Status->last()->status_id == 1) bg-secondary @else bg-primary @endif rounded-pill py-1 px-3">{{$purchase->Status->last()->reference->status}}</span></div>
                 <div class="col">R$ 0,00</div>
                 <div class="col">R$ {{number_format($purchase->details->sum('total'), 2, ',','.')}}</div>
                 <div class="col fw-bold">R$ {{number_format($purchase->details->sum('total'), 2, ',','.')}}</div>
@@ -59,3 +59,8 @@
          </div>
     </div>
 </div>
+
+@section('scripts')
+<script>
+</script>
+@endsection

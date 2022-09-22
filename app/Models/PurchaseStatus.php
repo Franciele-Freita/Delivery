@@ -13,8 +13,15 @@ class PurchaseStatus extends Model
         'status_id',
     ];
 
-    public function PurchaseStatusReference()
+    public function Purchase()
     {
         return $this->hasOne(Purchase::class);
     }
+    public function Reference()
+    {
+        return $this->hasOne(PurchaseStatusReference::class, 'id', 'status_id');
+    }
+
+
+
 }
