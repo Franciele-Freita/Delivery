@@ -35,8 +35,10 @@ class CheckInComponent extends Component
             $address_id = session()->get('address');
             $address = Address::find($address_id);
         }else{
-            $address = Address::where('user_id', $user->id)->first();
+            //$address = Address::where('user_id', $user->id)->first();
+            $address = Address::where('user_id', $user->id)->where('main' , true)->first();
         }
+
         $paymentForms = Payment::orderBy('id')->get();
 
         //dd(session()->all());
@@ -51,7 +53,7 @@ class CheckInComponent extends Component
         session()->put([
             'address' => $address_id,
         ]);
-        dd(session()->get('address'));
+        //dd(session()->get('address'));
         $this->dispatchBrowserEvent('close-modal');
     }
 
@@ -64,6 +66,11 @@ class CheckInComponent extends Component
 
     public function saveRequest()
     {
+        /* session()->forget('payment');
+        session()->save(); */
+        if(!session()->has('payment')){
+            session()->flash('message','Antes de prosseguir selecione uma forma de pagamento!');
+        }else{
         $user = Auth::user();
         $cart = Cart::find($this->cart_id);
         $purchase_id = Purchase::where('store_id', $cart->store_id)->max('purchase_id');
@@ -90,7 +97,10 @@ class CheckInComponent extends Component
         ]);
 
         redirect()->route('marketplace.index');
-
+        session()->forget('payment');
+        session()->forget('address');
+        session()->save();
+        }
         /*
         se não ouver session address usar o endereço principal
         id do endereço
