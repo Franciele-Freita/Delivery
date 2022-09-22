@@ -20,6 +20,7 @@ class CreatePurchasesTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('store_id')->constrained('stores');
             $table->foreignId('payment_id')->constrained('payment');
+            $table->foreignId('address_id')->constrained('address');
             $table->timestamps();
         });
     }

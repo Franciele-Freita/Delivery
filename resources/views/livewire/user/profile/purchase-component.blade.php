@@ -42,7 +42,7 @@
                         --}}
 
 
-{{--                     <div>
+                     {{--<div>
                         {{($purchase->created_at)->format('d/m/Y')}} {{($purchase->created_at)->format('H:i')}}
                     </div> --}}
                 </div>
@@ -83,7 +83,7 @@
     </div>
 
     {{-- Modal Purchase details --}}
-
+@if(isset($purchase))
     <div wire:ignore.self class="modal fade" id="modalPurchaseDetails" tabindex="-1" aria-labelledby="modalPurchaseDetailsLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -179,5 +179,5 @@
             </div>
         </div>
     </div>
-
+@endif
 </div>

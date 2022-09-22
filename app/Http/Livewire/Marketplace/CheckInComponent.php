@@ -77,6 +77,11 @@ class CheckInComponent extends Component
         if($purchase_id == null){
             $purchase_id = 1;
         }
+        if(session()->has('address')){
+            $address_id = session()->get('address');
+        }else{
+            $address_id = Address::where('user_id', $user->id)->where('main' , true)->first()->id;
+        }
 
         //$payment_id = session()->get('payment');
         $purchase = Purchase::create([
@@ -85,6 +90,7 @@ class CheckInComponent extends Component
             'user_id' => $user->id,
             'store_id' => $cart->store_id,
             'payment_id' => session()->get('payment'),
+            'address_id' => $address_id,
         ]);
 
         Cart::where('id', $this->cart_id)->update([
