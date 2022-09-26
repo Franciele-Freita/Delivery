@@ -74,15 +74,16 @@
             @endif
         </div>
     </section>
-
     <section>
         <article>
             @if($promotions_area == true)
-            <div class="rounded shadow p-3" style="background-color: rgba(219, 197, 0, 0.288)">
+            <div class="rounded shadow px-3 pt-3" style="background-color: rgba(219, 197, 0, 0.288)">
 
                 <h3><img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt=""> Promoções</h3>
                 <hr>
-                <div class="row">
+                @livewire('marketplace.promotions-slickslide-component',['products' => $products])
+
+{{--                 <div class="row">
                     @foreach ($products as $product)
                         @if($product->discount > 0 )
                             <div class="col-md-12 col-lg-6 col-xl-4" >
@@ -126,7 +127,7 @@
                         @endif
                     @endforeach
                 </div>
-            </div>
+ --}}            </div>
             @endif
         </article>
 
@@ -312,8 +313,8 @@
 @section('scripts')
 <script>
     window.addEventListener('close-modal', event => {
-        $( '#showProductModal' ).modal( 'hide' );
-        $( '#alertModal' ).modal( 'hide' );
+    $( '#showProductModal' ).modal( 'hide' );
+    $( '#alertModal' ).modal( 'hide' );
 
     });
     window.addEventListener('open-modal', event => {
@@ -328,6 +329,5 @@
         }, 3000);
         });
     });
-
 </script>
 @endsection
