@@ -9,15 +9,12 @@ class City extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'cod',
         'name',
-        'uf',
+        'estate_id',
     ];
 
-    public function estate()
+    public function Estate()
     {
-        return $this->belongsTo(Estates::class, 'id', 'region')->paginate(10)->get();
+        return $this->hasOne(Estate::class , 'id', 'estate_id');
     }
-
-
 }

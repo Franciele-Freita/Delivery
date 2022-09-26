@@ -25,9 +25,7 @@ Route::get('/marketplace', MarketplaceComponent::class)->name('marketplace.index
 //Route::get('/marketplace', [App\Http\Controllers\Marketplace\MarketplaceController::class, 'index'])->name('marketplace.index');
 
 Route::get('teste/{carts_id}', CheckInComponent::class)->name('teste');
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\Controller::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 Route::get('/loja', function () {
     return view('loja.loja');

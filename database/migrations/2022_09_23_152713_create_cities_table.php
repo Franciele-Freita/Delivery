@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductComponentsTable extends Migration
+class CreateCitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateProductComponentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_components', function (Blueprint $table) {
+        Schema::create('cities', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->foreignId('estate_id')->constrained('estate');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateProductComponentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_components');
+        Schema::dropIfExists('cities');
     }
 }

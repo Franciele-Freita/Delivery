@@ -9,9 +9,12 @@ class Estate extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'uf_id',
         'name',
         'uf',
-        'region_id',
     ];
+
+    public function Cities()
+    {
+        return $this->hasMany(City::class);
+    }
 }

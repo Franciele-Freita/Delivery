@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\City;
+use App\Models\Estate;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -16,9 +18,15 @@ class Controller extends BaseController
 
     public function index()
     {
-        session()->forget('auth');
+        /* session()->forget('auth');
         $categories = Category::get();
-        return view('presentation', ['categories' => $categories]);
+        return view('presentation', ['categories' => $categories]); */
+       /*  $cities = City::paginate(10); */
+
+/*         $cities = Estate::where('name', "EspÃ­rito Santo")->update([
+            'name' => "Espírito Santo",
+        ]); */
+        return view('dashboard', /* ['cities' => $cities = City::paginate(25) ] */);
     }
 
     public function userIndex()

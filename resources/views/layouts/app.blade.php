@@ -63,6 +63,12 @@
             $( '#showAddress' ).modal( 'hide' );
             $( '#deleteAddress' ).modal( 'hide' );
         });
+
+    function tocar(){
+        $("#som").html("<embed loop='false' src="{{asset('126198157.mp3')}}" hidden='true'  autoplay='true'>");
+            console.log("aqui");
+    }
+
     </script>
 </body>
 </html>

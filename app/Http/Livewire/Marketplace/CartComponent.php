@@ -88,4 +88,14 @@ class CartComponent extends Component
     {
         return redirect()->route('teste', $carts_id);
     }
+    public function deleteCart()
+    {
+        $cart = Cart::where('user_id', auth()->user()->id)->where('status', 0)->first();
+
+        for($i = 0; count($cart->Details) > $i ; ++$i){
+            $cart->Details[$i]->delete();
+        }
+        $cart->delete();
+        $this->dispatchBrowserEvent('close-modal');
+    }
 }

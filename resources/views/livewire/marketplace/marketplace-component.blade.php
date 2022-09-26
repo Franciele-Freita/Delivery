@@ -30,21 +30,80 @@
     {{-- end Caroussel --}}
 
     {{-- Categories --}}
+{{--    <div class="row">
+    <div class=" col-3 mb-3">
+        <div class=" p-3 rounded shadow border">
+            <img class="border rounded" src="{{ asset('img/icon/icon-marketplace/Sem título-1.png') }}" alt="" style="width: 270px">
+           </div>
+       </div>
+   </div> --}}
     @livewire('marketplace.categories-slickslide-component')
     {{-- end Categories --}}
 
 
 
     {{-- Stores --}}
-    <style>
-
-    </style>
     <article>
+        <div class="row">
+            @foreach ($stores as $store)
+                <div class=" col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                    <div class="p-3 border rounded mb-3 shadow h-product anchor-pointer" wire:click="showStore('{{$store->id}}')">
+                        <div class="m-sm-4 m-md-0 ">
+                            <div class=" d-flex justify-content-center ">
+                                <img class="rounded mb-3 border img-product" src="{{ asset('img/partner/image-store-partner/logo/'.$store->image_store) }}" alt="" {{-- style="width: 100%; height: 220px; object-fit: cover" --}}>
+                            </div>
+                            <div class="">
+                                <h5 class="pb-0 mb-0">{{$store->fantasy_name}}</h5>
+                                @if($store->notes->count() != 0)
+                                    <div class="">
+                                        @if(number_format($store->notes()->sum('note')) <= 5 )
+                                        <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-five.svg') }}" alt="" >
+                                        @elseif(number_format($store->notes()->sum('note')) <= 4)
+                                        <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-four.svg') }}" alt="" >
+                                        @elseif(number_format($store->notes()->sum('note')) <= 3)
+                                        <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-tree.svg') }}" alt="" >
+                                        @elseif(number_format($store->notes()->sum('note')) <= 2)
+                                        <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-two.svg') }}" alt="" >
+                                        @else
+                                        <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-one.svg') }}" alt="" >
+                                        @endif
+
+
+                                        {{-- <img class="rating-star-icon" src="{{ asset('img/admin/icon/icon-rating-star-yellow.svg') }}" alt="" >
+                                        {{number_format($store->notes()->sum('note') / $store->notes->count(), 1, '.',',')}} --}}
+                                    </div>
+                                @else
+                                <br>
+                                @endif
+                                <div class="text-muted">
+                                    {{$store->branch_of_activity}}
+                                </div>
+                                <div class="d-flex align-items-center text-muted">
+                                    <img class="mr-1" src="{{ asset('img/icon/icon-marketplace/icon-order.svg') }}" alt="" style="width: 18px">
+                                    Aceitamos encomendas
+                                </div>
+                                <div class="text-end">
+                                    @if ($store->status == true)
+                                    <span class="badge bg-AzulPiscina">Aberto</span>
+                                    @else
+                                    <span class="badge bg-secondary">Fechado</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </article>
+
+{{--     <article>
         <div class="row">
             @forelse($stores as $store)
             <div class="col-4" @if($store->status == false) style="opacity: 0.7; " @endif>
                 <div class="position-relative">
-                    <div wire:click="showStore('{{$store->id}}')" class="border rounded shadow-sm my-1 d-flex h-product anchor-pointer" {{-- @if($store->status == false) style=" background-color:rgb(230, 230, 230);" @endif --}}>
+                    <div wire:click="showStore('{{$store->id}}')" class="border rounded shadow-sm my-1 d-flex h-product anchor-pointer" >
                         <div class="p-1">
                             <img class="rounded border" src="{{ asset("img/partner/image-store-partner/logo/$store->image_store") }}" alt="foto do produto" style="height: 120px; width: 140px; object-fit:cover;">
                         </div>
@@ -92,7 +151,7 @@
             @endforelse
         </div>
     </article>
-    {{-- end Stores --}}
+ --}}    {{-- end Stores --}}
 
 
     <!-- Button trigger modal -->

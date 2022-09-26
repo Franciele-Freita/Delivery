@@ -84,6 +84,7 @@
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     <button wire:click="checkIn('{{$carts->first()->id}}')" class="btn btn-AzulPiscina form-control mb-3 fw-bold text-CinzaMedio">Continuar</button>
                     <a class="text-center text-CinzaMedio" href="{{ route('marketplace.index') }}">Adicionar mais produtos</a>
+                    <a class="text-center text-CinzaMedio" wire:click="deleteCart">Esvaziar cesta</a>
                 </div>
             </div>
         </div>

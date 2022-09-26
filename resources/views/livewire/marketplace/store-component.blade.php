@@ -85,13 +85,13 @@
                 <div class="row">
                     @foreach ($products as $product)
                         @if($product->discount > 0 )
-                            <div class="col-4" >
+                            <div class="col-md-12 col-lg-6 col-xl-4" >
                                 <div class="position-relative">
-                                    <div class="border rounded shadow-sm my-1 d-flex h-product anchor-pointer" wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
-                                        <div class="p-1">
+                                    <div class="p-3 border rounded shadow my-1 d-flex h-product anchor-pointer" wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
+                                        <div class="mr-2">
                                             <img class="rounded border" src="{{ asset('storage/'.$product->image) }}" alt="foto do produto" style="height: 120px; width: 140px; object-fit:cover;">
                                         </div>
-                                        <div class="px-3 py-1 d-flex flex-column align-self-stretch justify-content-between vw-100">
+                                        <div class="d-flex flex-column align-self-stretch justify-content-between vw-100">
                                             <div class=" fw-bold">
                                                 {{$product->name}}
                                             </div>
@@ -134,11 +134,62 @@
             @foreach ($categories as $category)
             <div class="bg-white  rounded shadow p-3 my-3">
                 <h3>{{$category->name}}</h3>
-               {{--  <strong> {{$category->name}}</strong> --}}
                 <hr>
                 <div class="row">
                     @foreach ( $category->products as $product)
-                    <div class="col-4" >
+                        <div class=" col-sm-12 col-md-6 col-lg-4 col-xl-3 ">
+                            <div class="p-3 border rounded mb-3 shadow h-product anchor-pointer ">
+                                <div class="m-sm-4 m-md-0 position-relative">
+                                    <div class=" d-flex justify-content-center ">
+                                        <img class="rounded mb-3 border img-product" src="{{ asset('storage/'.$product->image) }}" alt="" {{-- style="width: 100%; height: 220px; object-fit: cover" --}}>
+                                    </div>
+                                    <div class="">
+                                        <h5 class="pb-0 mb-0">{{$product->name}}</h5>
+                                        @if(strlen($product->description) > 0)
+                                        <div class="text-muted">
+                                            {{mb_strimwidth($product->description, 0, 70, "...")}}
+                                        </div>
+                                        @else
+                                        <br>
+                                        <br>
+
+                                        @endif
+                                    </div>
+                                    <br>
+                                    <div class="d-flex justify-content-end">
+                                        @if($product->discount <= 0)
+                                        <div class="fw-bold promotion d-flex align-items-center">
+                                            <div ><small>R$ </small>{{number_format($product->price, 2 , ",", ".")}}</div>
+                                        </div>
+                                        @else
+                                        <div class="fw-bold promotion d-flex align-items-center">
+                                            <img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt="">
+                                            <div class="mr-1"><small>R$ </small>{{number_format($product->discount, 2 , ",", ".")}} <del class="text-CinzaClaro" style="font-size: 12px"><small>R$ </small> {{number_format($product->price, 2 , ",", ".")}}</del></div>
+
+                                        </div>
+                                        @endif
+
+                                    </div>
+                                    @if(isset($product->Favorite))
+                                        <img class="mb-1 position-absolute bottom-0 start-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-check.svg') }}" alt="" style="width: 25px">
+                                    @else
+                                        <img class="mb-1 position-absolute bottom-0 start-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-outline.svg') }}" alt="" style="width: 25px">
+
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            @endforeach
+{{--             @foreach ($categories as $category)
+            <div class="bg-white  rounded shadow p-3 my-3">
+                <h3>{{$category->name}}</h3>
+                <hr>
+                <div class="row">
+                    @foreach ( $category->products as $product)
+                    <div class="col-md-12 col-lg-6 col-xl-4" >
                         <div class="position-relative">
                             <div class="border rounded shadow-sm my-1 d-flex h-product anchor-pointer" wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
                                 <div class="p-1">
@@ -179,7 +230,7 @@
                 </div>
             </div>
             @endforeach
-        </article>
+ --}}        </article>
 
     </section>
     {{-- modal --}}

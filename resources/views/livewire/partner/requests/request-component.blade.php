@@ -1,6 +1,11 @@
 <div wire:poll>
-    Current time: {{ now() }}
+{{--     Current time: {{ now() }}
 
+ --}}
+ <button onclick="tocar()">tocar</button>
+ <audio id="notificacao" preload="auto">
+        <source src="{{ asset('Clinking_Teaspoon-Simon_Craggs-59102891.mp3') }}" type="audio/mpeg">
+    </audio>
     <div class="p-3">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
@@ -62,5 +67,10 @@
 
 @section('scripts')
 <script>
+
+    window.addEventListener('play-bip', event => {
+        $('#notificacao').trigger('play');
+        document.getElementById('notificacao').play();
+    });
 </script>
 @endsection
