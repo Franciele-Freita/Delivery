@@ -50,6 +50,9 @@
         </div>
 
     </section>
+    <button type="button" class="btn btn-CinzaMedio" data-toggle="tooltip" data-html="true"  data-bs-placement="bottom" title="Tooltip on bottom">
+        teste tootip
+      </button>
     <section class="d-flex justify-content-between align-items-center p-3 rounded mb-3 shadow-sm bg-white">
         <div class="">
             <img class="icon" src="{{ asset('img/partner/icon/icon-min-note.svg')}}" alt="">
@@ -66,6 +69,7 @@
         <div class="">
             <img class="icon" src="{{ asset('img/partner/icon/icon-indicar.svg')}}" alt="">
         </div>
+
         <div class="">
             @if($store->status == 0)
                 <img title="Fechado" class="icon" src="{{ asset('img/partner/icon/close-door.svg')}}" alt="">
@@ -77,27 +81,25 @@
     <section>
         <article>
             @if($promotions_area == true)
-            <div class="rounded shadow px-3 pt-3" style="background-color: rgba(219, 197, 0, 0.288)">
+            <div wire:ignore class="rounded shadow px-3 pt-3" style="background-color: rgba(219, 197, 0, 0.288)">
 
                 <h3><img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt=""> Promoções</h3>
                 <hr>
-                @livewire('marketplace.promotions-slickslide-component',['products' => $products])
-
-{{--                 <div class="row">
+                <div  class="responsive">
                     @foreach ($products as $product)
                         @if($product->discount > 0 )
-                            <div class="col-md-12 col-lg-6 col-xl-4" >
-                                <div class="position-relative">
-                                    <div class="p-3 border rounded shadow my-1 d-flex h-product anchor-pointer" wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
+                            <div class="pb-3">
+                                <div class="position-relative mr-3 ">
+                                    <div class="p-3  border rounded shadow my-1 d-flex h-product anchor-pointer"  wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
                                         <div class="mr-2">
                                             <img class="rounded border" src="{{ asset('storage/'.$product->image) }}" alt="foto do produto" style="height: 120px; width: 140px; object-fit:cover;">
                                         </div>
                                         <div class="d-flex flex-column align-self-stretch justify-content-between vw-100">
                                             <div class=" fw-bold">
-                                                {{$product->name}}
+                                                {{mb_strimwidth($product->name, 0, 35, "...")}}
                                             </div>
                                             <div>
-                                                {{mb_strimwidth($product->description, 0, 50, "...")}}
+                                                {{mb_strimwidth($product->description, 0, 40, "...")}}
                                             </div>
                                             <div class="d-flex justify-content-end">
                                                 @if($product->discount <= 0)
@@ -113,6 +115,7 @@
                                                 @endif
 
                                             </div>
+
                                         </div>
                                     </div>
                                     @if(isset($product->Favorite))
@@ -121,13 +124,15 @@
                                         <img class="p-2 position-absolute top-0 end-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-outline.svg') }}" alt="" style="width: 40px">
 
                                     @endif
-
                                 </div>
+
                             </div>
                         @endif
                     @endforeach
+
                 </div>
- --}}            </div>
+
+            </div>
             @endif
         </article>
 
@@ -138,7 +143,7 @@
                 <hr>
                 <div class="row">
                     @foreach ( $category->products as $product)
-                        <div class=" col-sm-12 col-md-6 col-lg-4 col-xl-3 ">
+                        <div class=" col-sm-12 col-md-6 col-lg-4 col-xl-3 "  wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
                             <div class="p-3 border rounded mb-3 shadow h-product anchor-pointer ">
                                 <div class="m-sm-4 m-md-0 position-relative">
                                     <div class=" d-flex justify-content-center ">
@@ -184,7 +189,7 @@
                 </div>
             </div>
             @endforeach
-{{--             @foreach ($categories as $category)
+             {{--@foreach ($categories as $category)
             <div class="bg-white  rounded shadow p-3 my-3">
                 <h3>{{$category->name}}</h3>
                 <hr>
@@ -230,8 +235,8 @@
                     @endforeach
                 </div>
             </div>
-            @endforeach
- --}}        </article>
+            @endforeach--}}
+         </article>
 
     </section>
     {{-- modal --}}
@@ -243,7 +248,7 @@
                     <button type="button" class="btn-close position-absolute top-0 end-0 mt-4 mr-4 p-2 bg-AmareloGema" wire:click="resetModal" data-bs-dismiss="modal" aria-label="Close"></button>
 
                     <h3 class="">{{$product_name}}</h3>
-{{--                     <div class="d-flex">
+                     {{--<div class="d-flex">
                         <p class="text-CinzaMedio fw-bold mr-1">{{$product->Store->fantasy_name}}</p><p class="text-CinzaMedio">  •  </p><p class="ml-1 text-AmareloGema fw-bold">{{$product_category}}</p>
                     </div> --}}
                     @if($product_discount > 0)
@@ -284,7 +289,6 @@
         </div>
     </div>
 
-
     {{-- modal --}}
 
     <div wire:ignore.self class="modal fade" id="alertModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
@@ -312,6 +316,143 @@
 
 @section('scripts')
 <script>
+    $('[data-toggle="tooltip"]').tooltip();
+    $(document).ready(function(){
+
+$('.responsive').slick({
+
+    dots: true,
+    centerMode: false,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+        {
+        breakpoint: 1400,
+        settings: {
+            slidesToShow:3,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: true
+        }
+        },
+        {
+        breakpoint: 1200,
+        settings: {
+            slidesToShow:2,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: true
+        }
+        },
+        {
+        breakpoint: 992,
+        settings: {
+            slidesToShow:1,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: true
+        }
+        },
+        {
+        breakpoint: 768,
+        settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+        }
+        },
+        {
+        breakpoint: 600,
+        settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false
+        }
+        },
+        {
+        breakpoint: 480,
+        settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false
+        }
+        }
+        // You can unslick at a given breakpoint now by adding:
+        // settings: "unslick"
+        // instead of a settings object
+    ]
+
+});
+});
+window.addEventListener('call-slid', event => {
+            $('.responsive').slick({
+
+                dots: true,
+                centerMode: false,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                responsive: [
+                    {
+                    breakpoint: 1400,
+                    settings: {
+                        slidesToShow:3,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                    }
+                    },
+                    {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow:2,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                    }
+                    },
+                    {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow:1,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                    }
+                    },
+                    {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                    },
+                    {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        arrows: false
+                    }
+                    },
+                    {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        arrows: false
+                    }
+                    }
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+                ]
+
+            });
+        });
+
     window.addEventListener('close-modal', event => {
     $( '#showProductModal' ).modal( 'hide' );
     $( '#alertModal' ).modal( 'hide' );
@@ -329,5 +470,6 @@
         }, 3000);
         });
     });
+
 </script>
 @endsection

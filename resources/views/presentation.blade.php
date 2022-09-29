@@ -46,10 +46,10 @@
         </div>
         @endforeach
     </div>
-    <div class="d-flex justify-content-center mt-3">
+{{--     <div class="d-flex justify-content-center mt-3">
         <a class="text-center btn btn-AmareloGema fw-bold text-Dark"href="{{ route('marketplace.index') }}">Conheça nossos parceiros</a>
 
-    </div>
+    </div> --}}
   </div>
 
   <div class="bg-BegeMate shadow">

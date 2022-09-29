@@ -18,15 +18,10 @@ class Controller extends BaseController
 
     public function index()
     {
-        /* session()->forget('auth');
+        session()->forget('auth');
         $categories = Category::get();
-        return view('presentation', ['categories' => $categories]); */
-       /*  $cities = City::paginate(10); */
+        return view('presentation', ['categories' => $categories]);
 
-/*         $cities = Estate::where('name', "EspÃ­rito Santo")->update([
-            'name' => "Espírito Santo",
-        ]); */
-        return view('dashboard', /* ['cities' => $cities = City::paginate(25) ] */);
     }
 
     public function userIndex()

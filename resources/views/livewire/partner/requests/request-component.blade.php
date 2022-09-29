@@ -2,7 +2,6 @@
 {{--     Current time: {{ now() }}
 
  --}}
- <button onclick="tocar()">tocar</button>
  <audio id="notificacao" preload="auto">
         <source src="{{ asset('Clinking_Teaspoon-Simon_Craggs-59102891.mp3') }}" type="audio/mpeg">
     </audio>
@@ -19,9 +18,9 @@
                 @livewire('msg')
             @endif
         </div>
-        <div class="mt-3 p-3 fw-bold text-CinzaMedio border border-AmareloGema rounded mb-3">
+        {{-- <div class="mt-3 p-3 fw-bold text-CinzaMedio border border-AmareloGema rounded mb-3">
             Aqui estão seus produtos organizados por categoria... altere a visualização atravez dos icones logo acima!
-         </div>
+         </div> --}}
          <div class="mb-5  bg-white  shadow  px-3 pt-3 pb-1 rounded" >
             <div class="row  py-1 fw-bold text-Dark rounded">
                 <div style="width: 100px">Pedido</div>

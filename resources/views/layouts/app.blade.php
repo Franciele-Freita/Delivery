@@ -43,18 +43,20 @@
 
     @yield('scripts')
     <script>
+
         $(document).ready(function(){
             $('#cep').mask('00000000');
+            $('#teste').mask('00000000');
             $('#edit-cep').mask('00000000');
-            $('.cpf').mask('000.000.###-##');
-            $('.birth_date').mask('00/00/0000');
-            $('.telphone').mask('(00) 0000-0009');
-            $('.celphone').mask('(00) 0000-00009');
-            $('.celphone').blur(function(event){
+            $('#cpf').mask('000.000.###-##');
+            $('#birth_date').mask('00/00/0000');
+            $('#telphone').mask('(00) 0000-0009');
+            $('#celphone').mask('(00) 0000-00009');
+            $('#celphone').blur(function(event){
                 if($(this).val().length > 14){
-                    $('.celphone').mask('(00) 00000-0009');
+                    $('#celphone').mask('(00) 00000-0009');
                 }else{
-                    $('.celphone').mask('(00) 0000-00009');
+                    $('#celphone').mask('(00) 0000-00009');
                 }
             });
         });

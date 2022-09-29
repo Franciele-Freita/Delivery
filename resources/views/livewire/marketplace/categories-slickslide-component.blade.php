@@ -15,7 +15,6 @@
         @endforeach
     </div>
 </div>
-
 @section('scripts')
     <script>
         $(document).ready(function(){

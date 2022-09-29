@@ -15,12 +15,13 @@
                         <form action="{{ route('logout') }}" method="post">
                             @csrf
                             <div class="dropdown d-flex align-items-center">
-                                <a class="dropdown-toggle text-decoration-none text-CinzaMedio fw-bold h-link mr-3" href="#" role="button" id="dropdownMenuLinkRegister" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="{{-- dropdown-toggle  --}}text-decoration-none text-CinzaMedio fw-bold h-link mr-3" href="#" role="button" id="dropdownMenuLinkRegister" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{-- Olá, {{ Auth::user()->name }} --}}
-                                    {{Explode(" ", Auth::user()->name )[0]}}
+                                    {{-- {{Explode(" ", Auth::user()->name )[0]}} --}}
+                                    <img src="{{ asset('img/icon/icon-marketplace/icon-profile.svg') }}" alt="" style="width: 25px">
 
                                 </a>
-                                <a title="Carrinho" href="{{ route('cart') }}"><img class="mb-1 position-relative" style="width: 25px" src="{{ asset('img/icon/icon-marketplace/icon-basket.svg') }}" alt="">
+                                <a title="Carrinho" href="{{ route('cart') }}"><img class=" position-relative" style="width: 25px" src="{{ asset('img/icon/icon-marketplace/icon-basket.svg') }}" alt="">
                                     @if(Auth::user()->cart->sum('qtd') == 0)
                                     @else
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-AmareloGema" style="font-size: 12px">
@@ -32,9 +33,8 @@
                                 </a>
                                 <ul class="dropdown-menu mt-2" aria-labelledby="dropdownMenuLinkRegister">
 
-                                    <li><input class="dropdown-item fw-bold" type="submit" value="Sair">{{-- <a class="dropdown-item" type="submit" href="">Sair</a> --}}</li>
-                                    <li><a class="dropdown-item fw-bold" href="{{ route('purchase.index') }}">Pedidos</a></li>
                                     <li><a class="dropdown-item fw-bold" href="{{ route('profile.index') }}">Perfil</a></li>
+                                    <li><input class="dropdown-item fw-bold" type="submit" value="Sair">{{-- <a class="dropdown-item" type="submit" href="">Sair</a> --}}</li>
                                 </ul>
                             </div>
                         </form>

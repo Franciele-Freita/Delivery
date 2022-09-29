@@ -35,7 +35,10 @@
                 <div class="d-flex justify-content-around">
                     <a class="text-decoration-none text-AzulPiscina fw-bold anchor-pointer"
                         wire:click="showAddress('{{$address->id}}')" data-bs-toggle="modal"
-                        data-bs-target="#showAddress">Editar</a>
+                        data-bs-target="#newAddress">Editar</a>
+                    {{-- <a class="text-decoration-none text-AzulPiscina fw-bold anchor-pointer"
+                        wire:click="showAddress('{{$address->id}}')" data-bs-toggle="modal"
+                        data-bs-target="#showAddress">Editar</a> --}}
                     <a class="text-decoration-none text-AzulPiscina fw-bold anchor-pointer"
                         wire:click="deleteAddress('{{$address->id}}')" data-bs-toggle="modal"
                         data-bs-target="#deleteAddressModal">Excluir</a>
@@ -65,12 +68,22 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="newAddressLabel">Editar endereço</h5>
+                        <h5 class="modal-title" id="newAddressLabel">
+                            @if ($new == true)
+                            Novo endereço
+                        @else
+                            Editar endereço
+                        @endif
+                        </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             wire:click="resetModal"></button>
                     </div>
                     <div class="modal-body">
-                        <form wire:submit.prevent="newAddress">
+                        @if ($new == true)
+                            <form wire:submit.prevent="newAddress"> {{--  --}}
+                        @else
+                            <form wire:submit.prevent="editAddress">
+                        @endif
                             <div class="form-floating mb-3">
                                 <input type="text" wire:model="recipient" class="form-control" id="recipient"
                                     placeholder="Destinatário">
@@ -182,128 +195,6 @@
             </div>
         </div>
 
-        <!-- Modal edit Address-->
-        <div wire:ignore.self class="modal fade" id="showAddress" tabindex="-1" aria-labelledby="showAddressLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editAddressLabel">Editar endereço</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            wire:click="resetModal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form wire:submit.prevent="editAddress">
-                            <div class="form-floating mb-3">
-                                <input type="text" wire:model="recipient" class="form-control" id="recipient"
-                                    placeholder="Destinatário">
-                                <label for="recipient">Nome do destinatário</label>
-                                @error('recipient') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input class="form-control" wire:model="type" list="datalistOptions"
-                                    id="exampleDataList" placeholder="Tipo de endereço...">
-                                <datalist id="datalistOptions">
-                                    <option value="Residencial">
-                                    <option value="Comercial">
-                                    <option value="Casa">
-                                    <option value="Trabalho">
-                                </datalist>
-                                <label for="exampleDataList" class="form-label">Tipo de endereço</label>
-                                @error('type') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="d-flex bd-highlight">
-                                <div class="flex-grow-1 bd-highlight mb-3">
-                                    <div class="form-floating mr-1 position-relative">
-                                        <input type="text" wire:model="cep" class="form-control" id="edit-cep"
-                                            placeholder="cep">
-                                        <label for="cep">cep</label>
-
-                                        <div wire:click="searchCep"
-                                            class="anchor-pointer position-absolute top-50 end-0 translate-middle-y p-3">
-                                            <img src="{{ asset('img/icon/icon-marketplace/icon-search.svg') }}" alt=""
-                                                style="width: 30px">
-                                        </div>
-                                    </div>
-                                    @error('cep') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="flex-shrink-1 bd-highlight mt-3">
-                                    <a class="text-decoration-none text-CinzaMedio fw-bold" target="blank"
-                                        href="https://buscacepinter.correios.com.br/app/endereco/index.php?t">Não sei
-                                        meu cep</a>
-                                </div>
-                            </div>
-
-                            <div class="form-floating mb-3">
-                                <input type="text" wire:model="street" class="form-control" id="street"
-                                    placeholder="Rua, Av...">
-                                <label for="street">Endereço</label>
-                                @error('street') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="d-flex bd-highlight">
-                                <div class=" flex-shrink-1 bd-highlight">
-                                    <div class="mr-1 form-floating mb-3">
-                                        <input type="text" wire:model="number" class="form-control" id="number"
-                                            placeholder="Número">
-                                        <label for="number">Número</label>
-                                        @error('number') <span class="text-danger">{{ $message }}</span> @enderror
-                                    </div>
-                                </div>
-                                <div class="w-100 bd-highlight">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" wire:model="complement" class="form-control" id="complement"
-                                            placeholder="Complemento">
-                                        <label for="complement">Complemento</label>
-                                        @error('complement') <span class="text-danger">{{ $message }}</span> @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="text" wire:model="reference" class="form-control" id="reference"
-                                    placeholder="Referencia do endereço">
-                                <label for="reference">Informação de referência</label>
-                                @error('reference') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="d-flex bd-highlight">
-                                <div class="mr-1 bd-highlight">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" wire:model="district" class="form-control" id="district"
-                                            placeholder="Bairro">
-                                        <label for="district">Bairro</label>
-                                        @error('district') <span class="text-danger">{{ $message }}</span> @enderror
-                                    </div>
-                                </div>
-                                <div class="mr-1 bd-highlight">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" wire:model="city" class="form-control" id="city"
-                                            placeholder="Cidade">
-                                        <label for="city">Cidade</label>
-                                        @error('city') <span class="text-danger">{{ $message }}</span> @enderror
-                                    </div>
-                                </div>
-                                <div class="bd-highlight">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" wire:model="estate" class="form-control" id="estate"
-                                            placeholder="Estado">
-                                        <label for="estate">Estado</label>
-                                        @error('estate') <span class="text-danger">{{ $message }}</span> @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-check form-switch mb-3">
-                                <input class="form-check-input" wire:model="main" type="checkbox"
-                                    id="flexSwitchCheckDefault">
-                                <label
-                                    class="form-check-label fw-bold @if($main == true) text-CinzaMedio @else text-CinzaClaro @endif"
-                                    for="flexSwitchCheckDefault">Endereço principal</label>
-                            </div>
-                            <button type="submit"
-                                class="btn btn-AmareloGema form-control text-CinzaMedio fw-bold">Salvar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
   <!-- Modal delete address-->
   <div wire:ignore.self class="modal fade" id="deleteAddressModal" tabindex="-1" aria-labelledby="deleteAddressModalLabel" aria-hidden="true">

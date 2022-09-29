@@ -1,13 +1,13 @@
 <div>
 
     <h5>Cadastro</h5>
-    <form wire:ignore.self wire:submit.prevent="updateData">
+{{--     <form wire:ignore.self wire:submit.prevent="updateData">
         <b class="text-CinzaClaro">Dados da conta</b> <br>
 
         <div class="p-3 border rounded mb-3">
             <div class="form-floating mb-3">
-                <input type="email" wire:model="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">E-mail</label>
+                <input type="email" wire:model="email" class="form-control" id="email" placeholder="name@example.com">
+                <label for="email">E-mail</label>
                 @error('email') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-floating mb-3">
@@ -77,7 +77,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-AzulPiscina fw-bold text-CinzaMedio">Atualizar cadastro</button>
-    </form>
+    </form> --}}
 
         <a  wire:click="showDetails" data-bs-toggle="modal"
             data-bs-target="#deleteAddress">Editar dados</a> <br>
@@ -169,7 +169,7 @@
                             </div>
                             <button type="submit" class="btn btn-AzulPiscina fw-bold text-CinzaMedio">Atualizar cadastro</button>
                         </form>
-
+                        <button onclick="atualizar()">atualizar</button>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-CinzaClaro fw-bold"

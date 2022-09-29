@@ -27,6 +27,14 @@ class RegistrationComponent extends Component
     }
     public function render()
     {
+        $this->email = auth()->user()->email;
+        $this->password= auth()->user()->password;
+        $this->name= auth()->user()->name;
+        $this->birth_date= auth()->user()->AdditionalData->birth_date;
+        $this->cpf= auth()->user()->AdditionalData->cpf;
+        $this->celphone= auth()->user()->AdditionalData->celphone;
+        $this->telphone= auth()->user()->AdditionalData->telphone;
+        $this->genre= auth()->user()->AdditionalData->genre;
 
         return view('livewire.user.profile.registration-component', ['data' => auth()->user()]);
     }

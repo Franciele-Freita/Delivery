@@ -11,6 +11,7 @@ use Livewire\Component;
 class AddressComponent extends Component
 {
     public $address_id, $recipient, $type, $cep, $street, $number, $complement, $reference, $district, $city, $estate, $main;
+    public $new = true;
     public function render()
     {
         $user = Auth::user();
@@ -40,9 +41,9 @@ class AddressComponent extends Component
         $this->validateOnly($fields);
     }
 
-
     public function newAddress()
     {
+        $this->new = true;
         $this->validate();
         $addresses = Address::where('user_id', Auth::user()->id)->get();
         if($this->main == true && count($addresses) >= 1){
@@ -78,6 +79,7 @@ class AddressComponent extends Component
 
     public function showAddress($address_id)
     {
+
         $this->address_id = $address_id;
 
         $address = Address::find($address_id);
@@ -93,6 +95,7 @@ class AddressComponent extends Component
         $this->city = $address->city;
         $this->estate = $address->estate;
         $this->main = $address->main;
+        $this->new = false;
     }
 
     public function updateMainButton($address_id)
@@ -112,6 +115,8 @@ class AddressComponent extends Component
 
     public function editAddress()
     {
+
+
         $this->validate();
         $addresses = Address::where('user_id', Auth::user()->id)->get();
         if($this->main == true && count($addresses) >= 1){
@@ -164,6 +169,7 @@ class AddressComponent extends Component
         $this->city = '';
         $this->estate = '';
         $this->main = false;
+        $this->new = true;
         $this->resetValidation();
     }
 

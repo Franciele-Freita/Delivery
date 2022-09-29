@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class StoreComponent extends Component
 {
-    public $store_id, $promotions_area,$product_id, $product_image, $product_category, $product_name, $product_discount, $product_price, $product_description, $product_qtd = 1, $cart = [], $teste;
+    public $store_id, $promotions_area, $product_id, $product_image, $product_category, $product_name, $product_discount, $product_price, $product_description, $product_qtd = 1, $cart = [], $teste;
     public function mount($id)
     {
         $this->store_id = $id;
@@ -35,11 +35,13 @@ class StoreComponent extends Component
         }else{
             $this->promotions_area = false;
         }
+
         return view('livewire.marketplace.store-component', ['store'=>$store, 'products' => $products, 'categories' => $categories]);
     }
 
     public function showProduct($product_id)
     {
+
         $product = Product::find($product_id);
         $this->product_id = $product_id;
         $this->product_image = $product->image;
@@ -49,7 +51,7 @@ class StoreComponent extends Component
         $this->product_price = $product->price;
         $this->product_description = $product->description;
 
-
+        $this->dispatchBrowserEvent('reset-slid');
 
     }
     public function resetModal()
@@ -102,6 +104,8 @@ class StoreComponent extends Component
                             session()->flash('message','Produto adicionado no carrinho!');
                             $this->dispatchBrowserEvent('close-modal');
                             $this->dispatchBrowserEvent('close-alert');
+                            $this->dispatchBrowserEvent('call-slid');
+
                     }else{
                         dd($cart->first()->details->first()->product_id);
                             CartDetails::create([
@@ -116,10 +120,14 @@ class StoreComponent extends Component
                                 session()->flash('message','Produto adicionado no carrinho!');
                                 $this->dispatchBrowserEvent('close-modal');
                                 $this->dispatchBrowserEvent('close-alert');
+                                $this->dispatchBrowserEvent('call-slid');
+
                     }
                 }else{
                     $this->dispatchBrowserEvent('close-modal');
                     $this->dispatchBrowserEvent('open-modal');
+                    $this->dispatchBrowserEvent('call-slid');
+
                    //dd("existe e é uma loja diferente");
                 }
             }else{
@@ -142,6 +150,7 @@ class StoreComponent extends Component
                         session()->flash('message','Produto adicionado no carrinho!');
                         $this->dispatchBrowserEvent('close-modal');
                         $this->dispatchBrowserEvent('close-alert');
+                        $this->dispatchBrowserEvent('call-slid');
                     }
 
         }else{
@@ -165,6 +174,8 @@ class StoreComponent extends Component
         }
 
     }
+
+
 
     public function deleteCart($product_id)
     {

@@ -17,4 +17,6 @@ class CategoriesSlickslideComponent extends Component
         $category = Category::find($category_id);
         dd($category->name_category);
     }
+
+
 }
