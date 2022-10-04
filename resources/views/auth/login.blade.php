@@ -19,12 +19,13 @@
                 {{$errors->first('email')}}
               </div>
           </div>
-          <div class="form-floating">
+          <div class="form-floating position-relative">
             <input type="password" class="form-control @if ($errors->has('password')) is-invalid @endif" name="password" id="password" placeholder="Password" autocomplete="off">
             <label for="password">Senha</label>
             <div id="invalidCheck3Feedback" class="invalid-feedback">
                 {{$errors->first('password')}}
               </div>
+              <img id="imgEyes" class="position-absolute top-50 end-0 translate-middle-y mr-3" onclick="openEyes()" src="{{ asset('img/icon/icon-admin/icon-close-eyes.svg') }}" alt="" style="width: 30px">
           </div>
           <div>
 
@@ -42,5 +43,23 @@
       </div>
  </section>
 </form>
+ @endsection
+ @section('scripts')
+     <script>
+        let eyes = 0;
+        function openEyes(){
+            let password = document.getElementById('password');
+            let imgEyes = document.getElementById('imgEyes');
+            if(eyes == 0){
+                eyes = 1;
+                password.setAttribute("type", "text");
+                imgEyes.src = src="{{ asset('img/icon/icon-admin/icon-open-eyes.svg') }}"
+            }else{
+                eyes = 0;
+                password.setAttribute("type", "password");
+                imgEyes.src = src="{{ asset('img/icon/icon-admin/icon-close-eyes.svg') }}"
+            }
+        }
+     </script>
  @endsection
 

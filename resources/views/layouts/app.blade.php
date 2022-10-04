@@ -49,7 +49,7 @@
             $('#teste').mask('00000000');
             $('#edit-cep').mask('00000000');
             $('#cpf').mask('000.000.###-##');
-            $('#birth_date').mask('00/00/0000');
+            /* $('#birth_date').mask('00/00/0000'); */
             $('#telphone').mask('(00) 0000-0009');
             $('#celphone').mask('(00) 0000-00009');
             $('#celphone').blur(function(event){

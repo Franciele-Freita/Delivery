@@ -11,6 +11,7 @@ class PurchaseStatus extends Model
     protected $fillable = [
         'purchase_id',
         'status_id',
+        'commit',
     ];
 
     public function Purchase()

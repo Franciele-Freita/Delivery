@@ -53,8 +53,8 @@
                         </a>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item fw-bold text-Dark" href="#" wire:click="editCategory('{{$purchase->id}}')" data-bs-toggle="modal" data-bs-target="#modalEditCategory">Ver Detalhes </a></li>
-                            <li><a class="dropdown-item fw-bold text-Dark" href="#" wire:click="deleteCategory('{{$purchase->id}}')" data-bs-toggle="modal" data-bs-target="#modalDeleteCategory">Cancelar</a></li>
+                            <li><a class="dropdown-item fw-bold text-Dark" href="#" wire:click="showDetails('{{$purchase->id}}')" data-bs-toggle="modal" data-bs-target="#showDetails">Ver Detalhes </a></li>
+                            <li><a class="dropdown-item fw-bold text-Dark" href="#" wire:click="selectPurchase('{{$purchase->id}}')" data-bs-toggle="modal" data-bs-target="#calcelPurchase">Cancelar</a></li>
                         </ul>
                     </div>
                 </div>
@@ -62,7 +62,85 @@
             @endforeach
          </div>
     </div>
+
+        {{-- Detail Purchase Modal --}}
+        <div wire:ignore.self class="modal fade" id="showDetails" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h4 class="modal-title">Detalhes do pedido</h4>
+                            <button type="button" class="btn-close bg-AmareloGema text-end" wire:click="resetModal" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <h5 class="">Pedido nº {{ $purchase_id}}</h5>
+                        <div class="d-flex align-itens-center justify-content-between">
+                            <p>{{-- 12 de setembro - 01:53 --}} {{$created_at_date}} - {{$created_at_hour}}</p>
+                            <p>1 pedido realizado</p>
+                        </div>
+
+                    </div>
+
+                    {{-- <div class="modal-footer">
+
+                    </div> --}}
+                </div>
+            </div>
+        </div>
+
+
+    {{-- cancel Purchase Modal --}}
+    <div wire:ignore.self class="modal fade" id="calcelPurchase" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <h4 class="modal-title">Cancelar Pedido</h4>
+                        <button type="button" class="btn-close bg-AmareloGema text-end" wire:click="resetModal" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <h5 class="">Pedido nº {{ $purchase_id}}</h5>
+                    <div class="d-flex align-itens-center justify-content-between">
+                        <p>{{-- 12 de setembro - 01:53 --}} {{$created_at_date}} - {{$created_at_hour}}</p>
+                        <p>1 pedido realizado</p>
+                    </div>
+                    <h5 class="">Por que você quer cancelar o pedido?</h5>
+
+                    <div class="form-check px-5 py-3 rounded border mb-3" >
+                        <input class="form-check-input" wire:model="reason" type="radio" name="reason" id="reason1">
+                        <label class="form-check-label" for="reason1">
+                            O endereço está incompleto e o cliente não atende
+                        </label>
+                    </div>
+                    <div class="form-check px-5 py-3 rounded border mb-3" >
+                        <input class="form-check-input" wire:model="reason" type="radio" name="reason" id="reason2">
+                        <label class="form-check-label" for="reason2">
+                            Suspeita de golpe ou trote
+                        </label>
+                    </div>
+                    <div class="form-check px-5 py-3 rounded border mb-3" >
+                        <input class="form-check-input" wire:model="reason" type="radio" name="reason" id="reason3">
+                        <label class="form-check-label" for="reason3">
+                            O pedido foi feito fora do horário de funcionamento da loja
+                        </label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                        <label for="floatingTextarea2">Comentário</label>
+                      </div>
+                      <div class="d-flex justify-content-end">
+                        <button class="btn btn-AmareloGema fw-bold text-CinzaMedio">Cancelar Pedido</button>
+                      </div>
+                </div>
+
+                {{-- <div class="modal-footer">
+
+                </div> --}}
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
 
 @section('scripts')
 <script>

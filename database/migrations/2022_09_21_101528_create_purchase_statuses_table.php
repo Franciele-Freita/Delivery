@@ -17,6 +17,7 @@ class CreatePurchaseStatusesTable extends Migration
             $table->id();
             $table->foreignId('purchase_id')->constrained('purchase');
             $table->foreignId('status_id')->constrained('purchase_status_references');
+            $table->string('commit', 255)->nullable();
             $table->timestamps();
         });
     }

@@ -18,6 +18,6 @@
     <script src="{{ asset('js/bootstrap.js') }}"></script>
     <script src="{{ asset('js/bootstrap3-typeahead.min.js') }}"></script>
 
-
+    @yield('scripts')
 </body>
 </html>

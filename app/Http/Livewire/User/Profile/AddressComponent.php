@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
+use Manny\Manny;
 
 class AddressComponent extends Component
 {
@@ -38,7 +39,15 @@ class AddressComponent extends Component
     }
     public function updated($fields)
     {
+        if($fields == 'cep')
+        {
+            $this->cep = strtoupper(Manny::mask($this->cep, "11111111"));
+            $this->cep = Manny::stripper($this->cep, ['num']);
+
+        }
+
         $this->validateOnly($fields);
+
     }
 
     public function newAddress()
