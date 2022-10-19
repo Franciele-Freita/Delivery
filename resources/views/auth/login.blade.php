@@ -13,14 +13,14 @@
     </div>
     <div class="mx-5 col-lg-6 col-10 mb-3">
         <div class="form-floating mb-3">
-            <input type="email" class="form-control @if ($errors->has('email')) is-invalid @endif" name="email" id="email" placeholder="name@example.com" autocomplete="off" required value="{{old('email')}}">
+            <input type="email" class="form-control @if ($errors->has('email')) is-invalid @endif" name="email" id="email" placeholder="name@example.com"  required value="{{old('email')}}">
             <label for="email">Email</label>
             <div id="invalidCheck3Feedback" class="invalid-feedback">
                 {{$errors->first('email')}}
               </div>
           </div>
           <div class="form-floating position-relative">
-            <input type="password" class="form-control @if ($errors->has('password')) is-invalid @endif" name="password" id="password" placeholder="Password" autocomplete="off">
+            <input type="password" class="form-control @if ($errors->has('password')) is-invalid @endif" name="password" id="password" placeholder="Password" >
             <label for="password">Senha</label>
             <div id="invalidCheck3Feedback" class="invalid-feedback">
                 {{$errors->first('password')}}

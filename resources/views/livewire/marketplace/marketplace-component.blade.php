@@ -1,7 +1,5 @@
 <div>
 
-    {{-- <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" >Endereço</a> --}}
-    {{-- Caroussel --}}
     <div id="carouselExampleFade" class="carousel slide carousel-fade mb-3 p-0 rounded" data-bs-ride="carousel">
         <div class="carousel-inner rounded">
             <div class="carousel-item active rounded">
@@ -37,7 +35,26 @@
            </div>
        </div>
    </div> --}}
-    @livewire('marketplace.categories-slickslide-component')
+    <div>
+        <div wire:ignore class="responsive" >
+            @foreach ($categories as $category)
+
+                 <a wire:ignore class="h-product bg-white p-2 my-3 mx-3 rounded shadow  text-decoration-none text-CinzaMedio" wire:click="teste('{{$category->id}}')" style="">
+                    <div class="d-flex flex-column align-items-center justify-content-center">
+                        <div class="mb-2">
+                            <img class="{{-- view_icon_category --}} rounded" src="{{ asset("img/admin/icon/$category->img_category") }}" alt="" style="width:120px; height:120px; object-fit:cover;">
+                        </div>
+                        <div class="fst-italic">
+                            {{$category->name_category}}
+                        </div>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+
+        <div wire:model="category_id"></div>
+       {{--  @livewire('marketplace.categories-slickslide-component') --}}
+    </div>
     {{-- end Categories --}}
 
 
@@ -45,9 +62,9 @@
     {{-- Stores --}}
     <article>
         <div class="row">
-            @foreach ($stores as $store)
+            @forelse ($stores as $store)
                 <div class=" col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                    <div class="p-3 border rounded mb-3 shadow h-product anchor-pointer" wire:click="showStore('{{$store->id}}')">
+                    <div class="p-3 border rounded mb-3 shadow h-product anchor-pointer" wire:click="selStore('{{$store->id}}')" {{-- data-bs-toggle="modal" data-bs-target="#exampleModal" --}}>
                         <div class="m-sm-4 m-md-0 ">
                             <div class=" d-flex justify-content-center ">
                                 <img class="rounded mb-3 border img-product" src="{{ asset('img/partner/image-store-partner/logo/'.$store->image_store) }}" alt="" {{-- style="width: 100%; height: 220px; object-fit: cover" --}}>
@@ -94,7 +111,10 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+                @empty
+                Não encontramos nenhum restaurante que atenda a pesquisa
+                <a class="anchor-pointer"  wire:click="teste('0')">Voltar as lojas!</a>
+            @endforelse
         </div>
     </article>
 
@@ -191,11 +211,96 @@
       </div>
     </div>
   </div>--}}
+
+
+
+
+  <!-- Modal -->
+  <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title" id="exampleModalLabel">Confirme qual modalidade você deseja...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <Button class="form-control btn btn-AmareloGema fw-bold text-CinzaMedio  mb-3" wire:click="showStore('0')">Estou na Loja</Button>
+          <Button  class="form-control btn btn-AzulPiscina fw-bold text-CinzaMedio" wire:click="showStore('1')">Somente Delivery</Button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 @section('scripts')
     <script>
+$(document).ready(function(){
+            $('.responsive').slick({
 
+                dots: true,
+                centerMode: false,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                responsive: [
+                    {
+                    breakpoint: 1400,
+                    settings: {
+                        slidesToShow:5,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                    }
+                    },
+                    {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow:4,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                    }
+                    },
+                    {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow:3,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                    }
+                    },
+                    {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                    },
+                    {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                        arrows: false
+                    }
+                    },
+                    {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                        arrows: false
+                    }
+                    }
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+                ]
+
+            });
+        });
     </script>
 @endsection
 

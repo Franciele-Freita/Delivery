@@ -12,8 +12,13 @@
             {{-- Banner loja --}}
 
             <div class=" rounded-3 mb-3 ">
+                @if($data->store_banner)
+                <img style="width: 100%; height: 275px; object-fit: cover;" id="visualizar_imagem" class="rounded-3 p-1 border" src="$data->store_banner) }}" alt=""
+                >
+                @else
                 <img style="width: 100%; height: 275px; object-fit: cover;" id="visualizar_imagem" class="rounded-3 p-1 border" src="{{ asset('img/partner/image-store-partner/img-default.png') }}" alt=""
                 >
+                @endif
                  <input class="d-none" type="file" name="image" id="image" onchange="previewImage()"
                     accept=".JPEG, .JPG, .PNG, .HEIC">
 
@@ -24,11 +29,15 @@
             {{-- logo da loja --}}
             <div class="d-flex flex-row justify-content-start align-items-center">
                 <div class="d-flex justify-content-center mb-3">
-                    <img style="width: 150px; height: 150px; object-fit: cover;" class="p-1 border rounded-circle" id="visualizar_imagem_logo"
-                        src="{{ asset("img/partner/image-store-partner/img-default.png") }}" alt="">
-
-                    <input class="d-none" type="file" name="image_logo" id="image_logo" onchange="previewImageLogo()"
-                        accept=".JPEG, .JPG, .PNG, .HEIC">
+                        @if($data->image_store)
+                        <img style="width: 100%; height: 275px; object-fit: cover;" id="visualizar_imagem" class="rounded-3 p-1 border" src="{{ asset('img/partner/image-store-partner/logo/'.$data->image_store) }}" alt=""
+                >
+                        @else
+                        <img style="width: 150px; height: 150px; object-fit: cover;" class="p-1 border rounded-circle" id="visualizar_imagem_logo"
+                            src="{{ asset("img/partner/image-store-partner/img-default.png") }}" alt="">
+                        @endif
+                        <input class="d-none" type="file" name="image_logo" id="image_logo" onchange="previewImageLogo()"
+                            accept=".JPEG, .JPG, .PNG, .HEIC">
 
                 </div>
                 {{-- Nome da loja --}}

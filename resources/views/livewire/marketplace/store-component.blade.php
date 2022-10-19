@@ -20,16 +20,65 @@
         </div>
     @endif
     <section class="position-relative mb-3">
-        <div >
+
+{{--         <video width="640" height="360" autoplay controls controlslist="nodownload" webkitallowfullscreen mozallowfullscreen></video>
+        <video class="rounded" width="100%" height="600px" style="object-fit: cover" controls="controls "  class="video-stream" x-webkit-airplay="allow" data-youtube-id="N9oxmRT2YWw" data-yt2html5="https://www.youtube.com/watch?v=DhGoIb5oS-M"></video>
+
+ --}}{{--         <div >
             <img class="banner-store shadow" src="{{ asset('img/partner/image-store-partner/banner/'.$store->store_banner) }}" alt="banner da loja">
         </div>
+ --}}
         {{-- <div class="position-absolute bottom-0 rounded-circle  start-50 translate-middle-x mb-2">
             <img class="logo-store border border-4  mt-3 shadow-bold" src="{{ asset('img/partner/image-store-partner/logo/'.$store->image_store) }}" alt="imagem logo da loja">
         </div> --}}
+<img class="banner-store shadow mb-3" src="{{$store->store_banner}}" alt="">
 
 
-    </section>
-    <section class="d-flex align-items-center">
+        <section class="d-flex mb-3 ">
+            <div class="col d-flex justify-content-between align-items-center p-3 bg-white rounded shadow col-xs-12" >
+                <div class="d-flex align-items-center">
+                    <img class="rounded border mr-3" src="{{ asset('img/partner/image-store-partner/logo/'.$store->image_store) }}" alt="imagem logo da loja" style="width: 150px">
+                    <div class="d-flex flex-column align-items-center bg-white rounded ">
+                        <h5 class="pb-0 mb-0">{{$store->fantasy_name}}</h5>
+                        @if($store->notes->count() != 0)
+                            <div class="">
+                                @if(number_format($store->notes()->sum('note')) <= 5 )
+                                <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-five.svg') }}" alt="" >
+                                @elseif(number_format($store->notes()->sum('note')) <= 4)
+                                <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-four.svg') }}" alt="" >
+                                @elseif(number_format($store->notes()->sum('note')) <= 3)
+                                <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-tree.svg') }}" alt="" >
+                                @elseif(number_format($store->notes()->sum('note')) <= 2)
+                                <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-two.svg') }}" alt="" >
+                                @else
+                                <img class="" src="{{ asset('img/icon/icon-marketplace/icon-star-one.svg') }}" alt="" >
+                                @endif
+
+
+                                {{-- <img class="rating-star-icon" src="{{ asset('img/admin/icon/icon-rating-star-yellow.svg') }}" alt="" >
+                                {{number_format($store->notes()->sum('note') / $store->notes->count(), 1, '.',',')}} --}}
+                            </div>
+                            @endif
+                    </div>
+                </div>
+                <div class="anchor-pointer">
+                    @if(session()->has('delivery'))
+                        @if (session()->get('delivery') == 0 )
+                        <img src="{{ asset('img/icon/icon-marketplace/icon-hire.svg') }}" alt="" style="width: 30px">
+                        <a class="text-AzulPiscina" data-bs-toggle="modal" data-bs-target="#deliveryModal">Vou comer na loja!</a>
+                        @else
+                        <img src="{{ asset('img/icon/icon-marketplace/icon-delivery.svg') }}" alt="" style="width: 30px">
+                            <a class="text-AzulPiscina" data-bs-toggle="modal" data-bs-target="#deliveryModal">
+                                Entrega pra mim!
+                            </a>
+                        @endif
+                    @endif
+                </div>
+
+            </div>
+
+        </section>
+{{--     <section class="d-flex align-items-center">
         <div class="mr-3">
             <div>
                 <img class="mr-3 logo-store border border-4  mt-3 shadow" src="{{ asset('img/partner/image-store-partner/logo/'.$store->image_store) }}" alt="imagem logo da loja">
@@ -50,10 +99,9 @@
         </div>
 
     </section>
-    <button type="button" class="btn btn-CinzaMedio" data-toggle="tooltip" data-html="true"  data-bs-placement="bottom" title="Tooltip on bottom">
-        teste tootip
-      </button>
-    <section class="d-flex justify-content-between align-items-center p-3 rounded mb-3 shadow-sm bg-white">
+ --}}
+
+    <section class="d-flex justify-content-between align-items-center p-3 rounded mb-3 shadow bg-white">
         <div class="">
             <img class="icon" src="{{ asset('img/partner/icon/icon-min-note.svg')}}" alt="">
         </div>
@@ -81,52 +129,58 @@
     <section>
         <article>
             @if($promotions_area == true)
-            <div wire:ignore class="rounded shadow px-3 pt-3" style="background-color: rgba(219, 197, 0, 0.288)">
+            <div wire:ignore class="{{-- rounded shadow --}} {{-- px-3 --}} py-3" {{-- style="background-color: rgba(219, 197, 0, 0.288)" --}}>
 
-                <h3><img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt=""> Promoções</h3>
-                <hr>
-                <div  class="responsive">
+                <h3><img class="mr-1 mb-3"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt=""> Promoções</h3>
+                {{-- <hr> --}}
+                <div  class="row">
                     @foreach ($products as $product)
                         @if($product->discount > 0 )
-                            <div class="pb-3">
-                                <div class="position-relative mr-3 ">
-                                    <div class="p-3  border rounded shadow my-1 d-flex h-product anchor-pointer"  wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
-                                        <div class="mr-2">
-                                            <img class="rounded border" src="{{ asset('storage/'.$product->image) }}" alt="foto do produto" style="height: 120px; width: 140px; object-fit:cover;">
-                                        </div>
-                                        <div class="d-flex flex-column align-self-stretch justify-content-between vw-100">
-                                            <div class=" fw-bold">
-                                                {{mb_strimwidth($product->name, 0, 35, "...")}}
-                                            </div>
-                                            <div>
-                                                {{mb_strimwidth($product->description, 0, 40, "...")}}
-                                            </div>
-                                            <div class="d-flex justify-content-end">
-                                                @if($product->discount <= 0)
-                                                <div class="fw-bold promotion d-flex align-items-center">
-                                                    <div ><small>R$ </small>{{number_format($product->price, 2 , ",", ".")}}</div>
-                                                </div>
-                                                @else
-                                                <div class="fw-bold promotion d-flex align-items-center">
-                                                    <img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt="">
-                                                    <div class="mr-1"><small>R$ </small>{{number_format($product->discount, 2 , ",", ".")}} <del class="text-CinzaClaro" style="font-size: 12px"><small>R$ </small> {{number_format($product->price, 2 , ",", ".")}}</del></div>
-
-                                                </div>
-                                                @endif
-
-                                            </div>
-
-                                        </div>
+                        <div class=" col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3"  wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
+                            <div class="p-3 border rounded mb-3 shadow h-product anchor-pointer h-100">
+                                <div class="m-sm-4 m-md-0 position-relative ">
+                                    <div class=" d-flex justify-content-center">
+                                        <img class="rounded mb-3 border img-product" src="{{ asset('storage/'.$product->image) }}" alt="" {{-- style="width: 100%; height: 220px; object-fit: cover" --}}>
                                     </div>
-                                    @if(isset($product->Favorite))
-                                        <img class="p-2 position-absolute top-0 end-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-check.svg') }}" alt="" style="width: 40px">
-                                    @else
-                                        <img class="p-2 position-absolute top-0 end-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-outline.svg') }}" alt="" style="width: 40px">
+                                    <div class="">
+                                        <h5 class="pb-0 mb-0">{{$product->name}}</h5>
+                                        @if(strlen($product->description) > 0)
+                                        <div class="text-muted">
+                                            {{mb_strimwidth($product->description, 0, 70, "...")}}
+                                        </div>
+                                        @else
+                                        <br>
+                                        <br>
 
-                                    @endif
+                                        @endif
+                                    </div>
+                                    <br>
+                                    <div class="d-flex align-items-end justify-content-end  align-items-end ">
+                                        @if($product->discount <= 0)
+                                        <div class="fw-bold promotion d-flex align-items-center">
+                                            <div ><small>R$ </small>{{number_format($product->price, 2 , ",", ".")}}</div>
+                                        </div>
+                                        @else
+                                        <div class="fw-bold promotion d-flex align-items-center">
+                                            <img class="mr-1"  style="width: 20px" src="{{ asset('img/partner/icon/icon-discount.svg') }}" alt="">
+                                            <div class="mr-1"><small>R$ </small>{{number_format($product->discount, 2 , ",", ".")}} <del class="text-CinzaClaro" style="font-size: 12px"><small>R$ </small> {{number_format($product->price, 2 , ",", ".")}}</del></div>
+
+                                        </div>
+                                        @endif
+
+                                    </div>
+
+                                    @auth
+                                        @if(isset($product->Favorite))
+                                            <img class="mb-1 position-absolute bottom-0 start-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-check.svg') }}" alt="" style="width: 25px">
+                                        @else
+                                            <img class="mb-1 position-absolute bottom-0 start-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-outline.svg') }}" alt="" style="width: 25px">
+
+                                        @endif
+                                    @endauth
                                 </div>
-
                             </div>
+                        </div>
                         @endif
                     @endforeach
 
@@ -138,13 +192,13 @@
 
         <article>
             @foreach ($categories as $category)
-            <div class="bg-white  rounded shadow p-3 my-3">
+            <div class="{{-- bg-white  rounded shadow --}} {{-- p-3 --}} my-3">
                 <h3>{{$category->name}}</h3>
-                <hr>
+                {{-- <hr> --}}
                 <div class="row">
                     @foreach ( $category->products as $product)
-                        <div class=" col-sm-12 col-md-6 col-lg-4 col-xl-3 "  wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
-                            <div class="p-3 border rounded mb-3 shadow h-product anchor-pointer ">
+                        <div class=" col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3"  wire:click="showProduct('{{$product->id}}')" data-bs-toggle="modal" data-bs-target="#showProductModal">
+                            <div class="p-3 border rounded mb-3 shadow h-product anchor-pointer h-100">
                                 <div class="m-sm-4 m-md-0 position-relative">
                                     <div class=" d-flex justify-content-center ">
                                         <img class="rounded mb-3 border img-product" src="{{ asset('storage/'.$product->image) }}" alt="" {{-- style="width: 100%; height: 220px; object-fit: cover" --}}>
@@ -176,12 +230,16 @@
                                         @endif
 
                                     </div>
-                                    @if(isset($product->Favorite))
-                                        <img class="mb-1 position-absolute bottom-0 start-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-check.svg') }}" alt="" style="width: 25px">
-                                    @else
-                                        <img class="mb-1 position-absolute bottom-0 start-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-outline.svg') }}" alt="" style="width: 25px">
 
-                                    @endif
+                                    @auth
+                                        @if(isset($product->Favorite))
+                                            <img class="mb-1 position-absolute bottom-0 start-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-check.svg') }}" alt="" style="width: 25px">
+                                        @else
+                                            <img class="mb-1 position-absolute bottom-0 start-0" wire:click="favorite('{{$product->id}}')" src="{{ asset('img/icon/icon-marketplace/icon-favorite-outline.svg') }}" alt="" style="width: 25px">
+
+                                        @endif
+                                    @endauth
+
                                 </div>
                             </div>
                         </div>
@@ -263,8 +321,9 @@
 
                 </div>
 
+                @auth
                 <div class="modal-footer">
-                        <div class="d-flex bd-highlight">
+                    <div class="d-flex bd-highlight">
 
                             <div class="p-2 flex-shrink-1 bd-highlight">
                                 <div class="btn-group inline border rounded" role="group" aria-label="Basic example" style="width: 150px">
@@ -284,7 +343,14 @@
                                 </button>
                             </div>
                         </div>
-                </div>
+                    </div>
+                    @else
+                    <div class="modal-footer{{--  bg-AzulPiscina --}}">
+                        Faça seu <a href="{{ route('login') }}" class="fw-bold text-CinzaMedio">login</a> ou <a href="{{ route('register') }}" class="fw-bold text-CinzaMedio">registre-se</a> para obter uma melhor experiência!
+
+                    </div>
+                    @endauth
+
             </div>
         </div>
     </div>
@@ -312,148 +378,32 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div wire:ignore.self class="modal fade" id="deliveryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+            <h5 class="modal-title" id="exampleModalLabel">Confirme qual modalidade você deseja...</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <Button class="form-control btn btn-AmareloGema fw-bold text-CinzaMedio  mb-3" wire:click="delivery('0')">Estou na Loja</Button>
+            <Button  class="form-control btn btn-AzulPiscina fw-bold text-CinzaMedio" wire:click="delivery('1')">Somente Delivery</Button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
 </div>
 
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/gh/thelevicole/youtube-to-html5-loader@4.0.1/dist/YouTubeToHtml5.js"></script>
+<script>new YouTubeToHtml5();</script>
 <script>
-    $('[data-toggle="tooltip"]').tooltip();
-    $(document).ready(function(){
 
-$('.responsive').slick({
-
-    dots: true,
-    centerMode: false,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-        {
-        breakpoint: 1400,
-        settings: {
-            slidesToShow:3,
-            slidesToScroll: 1,
-            infinite: true,
-            dots: true
-        }
-        },
-        {
-        breakpoint: 1200,
-        settings: {
-            slidesToShow:2,
-            slidesToScroll: 1,
-            infinite: true,
-            dots: true
-        }
-        },
-        {
-        breakpoint: 992,
-        settings: {
-            slidesToShow:1,
-            slidesToScroll: 1,
-            infinite: true,
-            dots: true
-        }
-        },
-        {
-        breakpoint: 768,
-        settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-        }
-        },
-        {
-        breakpoint: 600,
-        settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false
-        }
-        },
-        {
-        breakpoint: 480,
-        settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false
-        }
-        }
-        // You can unslick at a given breakpoint now by adding:
-        // settings: "unslick"
-        // instead of a settings object
-    ]
-
-});
-});
-window.addEventListener('call-slid', event => {
-            $('.responsive').slick({
-
-                dots: true,
-                centerMode: false,
-                infinite: true,
-                speed: 300,
-                slidesToShow: 3,
-                slidesToScroll: 1,
-                responsive: [
-                    {
-                    breakpoint: 1400,
-                    settings: {
-                        slidesToShow:3,
-                        slidesToScroll: 1,
-                        infinite: true,
-                        dots: true
-                    }
-                    },
-                    {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow:2,
-                        slidesToScroll: 1,
-                        infinite: true,
-                        dots: true
-                    }
-                    },
-                    {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow:1,
-                        slidesToScroll: 1,
-                        infinite: true,
-                        dots: true
-                    }
-                    },
-                    {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1
-                    }
-                    },
-                    {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        arrows: false
-                    }
-                    },
-                    {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        arrows: false
-                    }
-                    }
-                    // You can unslick at a given breakpoint now by adding:
-                    // settings: "unslick"
-                    // instead of a settings object
-                ]
-
-            });
-        });
 
     window.addEventListener('close-modal', event => {
+        $( '#deliveryModal' ).modal( 'hide' );
     $( '#showProductModal' ).modal( 'hide' );
     $( '#alertModal' ).modal( 'hide' );
 

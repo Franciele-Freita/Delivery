@@ -16,6 +16,8 @@ class CartComponent extends Component
 
     public function render()
     {
+       // dd(auth()->user()->cart->where('status', 0)->first()->details->sum('qtd'));
+        //dd(auth()->user()->cart);
         $carts = Cart::with('store')->where('user_id', Auth::user()->id)->where('status', 0)->get();
         $cart_id = Cart::where('status', 0)->where('user_id', Auth::user()->id)->max('cart_id');
         return view('livewire.marketplace.cart-component', ['carts' => $carts, /* 'stores' => $stores,  'hasCart' => $hasCart*/]);

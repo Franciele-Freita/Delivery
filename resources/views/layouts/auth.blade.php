@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/aplication/logo.svg') }}">
     <title>AQTEM Delivery</title>
 </head>
 <body class="bg-Background">

@@ -1,4 +1,4 @@
-<div>
+<div wire:poll>
     <header>
         <div class="container-fluid shadow bg-AzulPiscina">
             <div class="">
@@ -22,10 +22,11 @@
 
                                 </a>
                                 <a title="Carrinho" href="{{ route('cart') }}"><img class=" position-relative" style="width: 25px" src="{{ asset('img/icon/icon-marketplace/icon-basket.svg') }}" alt="">
-                                    @if(Auth::user()->cart->sum('qtd') == 0)
+
+                                    @if(auth()->user()->cart->where('status', 0)->count() == 0)
                                     @else
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-AmareloGema" style="font-size: 12px">
-                                        {{Auth::user()->cart->sum('qtd')}}
+                                        {{auth()->user()->cart->where('status', 0)->first()->details->sum('qtd')}}
                                         <span class="visually-hidden"></span>
                                       </span>
 
@@ -62,7 +63,7 @@
                             </div>
                         </div>
                         <div class="d-block d-lg-none">
-                            <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+                            <nav class="navbar navbar-expand-lg navbar-light d-lg-none">
                                 <div>
                                     <button class="btn btn-AmareloGema" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                         <span class="navbar-toggler-icon"></span>

@@ -14,6 +14,7 @@ Route::get('marketplace/location', 'Marketplace\MarketplaceController@location')
 //Route::get('marketplace/{id}', 'Marketplace\MarketplaceController@show')->name('store.marketplace.show'); //-> rota via controller
 Route::get('marketplace/{id}', StoreComponent::class)->name('store.marketplace.show');
 Route::any('marketplace/search', 'Marketplace\MarketplaceController@storeSearch')->name('store.marketplace.storeSearch');
+//Route::get('marketplace/search/{category}', MarketplaceComponent::class)->name('marketplace.search');
 
 
 

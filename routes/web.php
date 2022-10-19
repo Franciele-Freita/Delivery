@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\Controller::class, 'index'])->name('index');
 
 Route::get('/marketplace', MarketplaceComponent::class)->name('marketplace.index');
+Route::get('/marketplace/search/{category}', MarketplaceComponent::class)->name('marketplace.search');
 //Route::get('/marketplace', [App\Http\Controllers\Marketplace\MarketplaceController::class, 'index'])->name('marketplace.index');
 
 Route::get('teste/{carts_id}', CheckInComponent::class)->name('teste');

@@ -175,7 +175,9 @@
 
         <div class="vh-100 overflow-auto p-2">
 
-
+            <div>
+                <img src="{{ asset('') }}" alt="">
+            </div>
 
                 @if(Auth::guard('partner')->user()->stores->first()->status == 0)
                 <a href="{{ route('setup.create') }}" class="btn btn-BrancoGelo align-items-center text-Dark fw-bold my-3 rounded collapsed form-control">

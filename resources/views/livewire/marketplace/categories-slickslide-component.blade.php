@@ -1,8 +1,8 @@
 <div>
-    <div class="responsive">
+    <div wire:ignore class="responsive" >
         @foreach ($categories as $category)
 
-             <a class="bg-white p-2 my-3 mx-3 rounded shadow  text-decoration-none text-CinzaMedio" wire:click="teste('{{$category->id}}')" style="">
+             <a wire:ignore class="bg-white p-2 my-3 mx-3 rounded shadow  text-decoration-none text-CinzaMedio" wire:click="teste('{{$category->id}}')" style="">
                 <div class="d-flex flex-column align-items-center justify-content-center">
                     <div class="mb-2">
                         <img class="{{-- view_icon_category --}} rounded" src="{{ asset("img/admin/icon/$category->img_category") }}" alt="" style="width:120px; height:120px; object-fit:cover;">

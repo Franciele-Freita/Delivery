@@ -221,7 +221,7 @@
 
 
 @section('scripts')
-{{-- <script>
+<script>
     $(document).ready(function(){
     $('#cep').mask('00000000');
     $('#edit-cep').mask('00000000');
@@ -231,5 +231,5 @@
         $( '#showAddress' ).modal( 'hide' );
         $( '#deleteAddress' ).modal( 'hide' );
     });
-</script> --}}
+</script>
 @endsection

@@ -9,13 +9,15 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('slick/slick.css') }}"/>
     <link rel="stylesheet" href="{{ asset('slick/slick-theme.css') }}"/>
-    @livewireStyles
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/aplication/logo.svg') }}">
+        @livewireStyles
     <title>AQTEM Delivery</title>
 
 </head>
 <body class="bg-Background d-flex flex-column min-vh-100">
 
-    @livewire('includes.header-component')
+        @livewire('includes.header-component')
+
 
     <main>
         @yield('content')
